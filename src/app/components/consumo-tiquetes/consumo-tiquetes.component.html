@@ -1,0 +1,100 @@
+<app-navbar>
+
+    <div class="container">
+
+
+        <div class="col-md-12">
+            <h1>Módulo Consumo</h1>
+            <h2>{{ horaFecha | date: 'dd/MM/yyyy HH:mm:ss' }} - {{tipoServicio.nombre}}</h2>
+            <h2>Alimentos consumidos - {{ consumosTiempoReal }}/<span
+                style="color: red;">{{limiteConsumos}}</span></h2>
+        </div>
+
+        <div *ngIf="isConsumoActivo && isContratoVigente && isConsumosDisponibles; else noActivo">
+
+            <div class="row">
+
+                <div class="col d-flex justify-content-center mx-auto">
+                    <mat-card style="max-width: 400px;">
+                        <mat-card-content class="">
+                            <div class="row">
+                                <div class="col-md-8" style="font-weight: bold;">
+                                    Leer QR
+                                </div>
+                                <div class="col pb-3 text-center">
+                                    <button mat-fab extended (click)="switchCamera()" style="background-color: black;">
+                                        <i class="fa-solid fa-repeat"></i> | <i class="fa-solid fa-camera"></i></button>
+                                </div>
+                            </div>
+                        </mat-card-content>
+
+                        <div class="scanner-container">
+                            <zxing-scanner [(device)]="selectedDevice" [formats]="allowedFormats"
+                                (scanSuccess)="onScanSuccess($event)" (camerasFound)="onCamerasFound($event)">
+                            </zxing-scanner>
+
+                            <!-- Agregar overlay/guía visual aquí -->
+                            <div class="scanner-overlay"></div>
+                        </div>
+
+                        <!-- <mat-card-actions class="d-flex justify-content-center mt-2 mb-2">
+                            <button mat-button (click)="leerQR()"><i
+                                    class="fa-solid fa-rotate-right fa-2xl"></i></button>
+                            <button mat-button (click)="validarConsumo()"><i
+                                    class="fa-solid fa-check fa-2xl"></i></button>
+                        </mat-card-actions> -->
+                    </mat-card>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col">
+                    <mat-card style="max-width: 800px; margin: auto;">
+                        <mat-form-field>
+                            <input matInput placeholder="Código o ID estudiante" [(ngModel)]="codigo"
+                                (keyup.enter)="validarConsumo()">
+                            <button *ngIf="codigo" matSuffix mat-icon-button aria-label="Clear" class="mr-1"
+                                (click)="codigo=''">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <button matSuffix mat-icon-button aria-label="Clear" (click)="validarConsumo()">
+                                <mat-icon>send</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </mat-card>
+                </div>
+
+            </div>
+
+            <div class="row mt-5">
+                <div class="col">
+                    <mat-card style="max-width: 800px; margin: auto;">
+                        <mat-card-header>
+                            <mat-card-title>Datos del Estudiante</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src={{imagenURL}} alt="Documento de Identidad" class="img-fluid">
+                                </div>
+                                <div class="col-md-5">
+                                    <p><strong>Nombre:</strong> {{estudiante.nombre}}</p>
+                                    <p><strong>Apellido:</strong> {{estudiante.apellido}} </p>
+                                    <p><strong>Código Estudiantil:</strong> {{estudiante.codigo}}</p>
+                                    <p><strong>Identificación:</strong> {{estudiante.id}}</p>
+                                    <p><strong>Programa:</strong> {{estudiante.programa}}</p>
+
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+
+        </div>
+        <ng-template #noActivo>
+            <p>El modulo no se encuentra habilitado en este momento!</p>
+        </ng-template>
+
+    </div>
+</app-navbar>

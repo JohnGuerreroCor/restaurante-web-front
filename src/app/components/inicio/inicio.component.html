@@ -1,0 +1,89 @@
+<app-navbar>
+  <div class="container p-5" *ngIf="!mobile">
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        <div class="card card-usco-menu text-center rounded shadow filter-green mt-4 cursor-select"
+          [routerLink]="['/ventaTiquetes']" routerLinkActive="router-link-active">
+          <div class="card-body ">
+            <i class="fa-solid fa-shop fa-2xl"></i>
+          </div>
+          <div class="card-footer">
+            <small class="card-title font-usco-vt font-weight-bold">
+              VENTA
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card card-usco-menu text-center rounded shadow filter-green mt-4 cursor-select"
+          [routerLink]="['/consumoTiquetes']" routerLinkActive="router-link-active">
+          <div class="card-body ">
+            <i class="fa-solid fa-utensils fa-2xl"></i>
+          </div>
+          <div class="card-footer">
+            <small class="card-title font-usco-vt font-weight-bold">
+              CONSUMO
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card card-usco-menu text-center rounded shadow filter-green mt-4 cursor-select"
+          [routerLink]="['/cargueInformacion']" routerLinkActive="router-link-active">
+          <div class="card-body ">
+            <i class="fa-solid fa-truck-ramp-box fa-2xl"></i>
+          </div>
+          <div class="card-footer">
+            <small class="card-title font-usco-vt font-weight-bold">
+              CARGUE INFORMACION
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container mb-2" *ngIf="mobile">
+    <br><br><br>
+    <div class="row">
+      <div class="col">
+        <div class="card card-usco-menu text-center rounded shadow filter-green mt-4 cursor-select"
+          [routerLink]="['/ventaTiquetes']" routerLinkActive="router-link-active">
+          <div class="card-body ">
+            <i class="fa-solid fa-shop fa-2xl"></i>
+          </div>
+          <div class="card-footer">
+            <small class="card-title font-usco-vt font-weight-bold">
+              VENTA
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card card-usco-menu text-center rounded shadow filter-green mt-4 cursor-select"
+          [routerLink]="['/consumoTiquetes']" routerLinkActive="router-link-active">
+          <div class="card-body ">
+            <i class="fa-solid fa-utensils fa-2xl"></i>
+          </div>
+          <div class="card-footer">
+            <small class="card-title font-usco-vt font-weight-bold">
+              CONSUMO
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card card-usco-menu text-center rounded shadow filter-green mt-4 cursor-select"
+          [routerLink]="['/cargueInformacion']" routerLinkActive="router-link-active">
+          <div class="card-body ">
+            <i class="fa-solid fa-truck-ramp-box fa-2xl"></i>
+          </div>
+          <div class="card-footer">
+            <small class="card-title font-usco-vt font-weight-bold">
+              CARGUE INFORMACION
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-navbar>

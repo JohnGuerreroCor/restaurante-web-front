@@ -1,0 +1,43 @@
+<app-navbar>
+    <div class="row mt-5">
+        <div class="col d-flex justify-content-center mx-auto">
+            <mat-card style="max-width: 600px;">
+                <mat-card-content class="mb-2 text-center">
+                    <span style="font-weight: bold;">QR</span>
+                </mat-card-content>
+                <img style="width: 100%; height: auto;"
+                    src={{urlQR}} alt="qrcode">
+            </mat-card>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col">
+            <mat-card style="max-width: 800px; margin: auto; padding: auto;">
+                <mat-card-header>
+                    <mat-card-title>Tiquetes disponibles</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-md-4 ml-2">
+                            <img src="../../../assets/boleto.png" alt="Tiquete" class="img-fluid">
+
+                        </div>
+                        <div class="col-md-5 ml-2 mt-5">
+                            <p><strong>Desayunos:</strong> {{tiquetesComprados[0]}} </p>
+                            <p><strong>Almuerzos:</strong> {{tiquetesComprados[1]}} </p>
+                            <p><strong>Cenas:</strong> {{tiquetesComprados[2]}} </p>
+                            <p><strong>Vigencia: </strong> {{contratoVigente.fechaFinal == undefined ? " ":contratoVigente.fechaFinal }}</p>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+
+    <!-- <button (click)="crearLLaves()">crear LLaves</button> -->
+    <!-- <button (click)="encryptData()">Encriptar data</button>
+    <button (click)="decryptData()">Desencriptar data</button> -->
+    <!-- <button (click)="encriptarInfo()">Generar QR</button> -->
+
+</app-navbar>

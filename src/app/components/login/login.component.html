@@ -1,0 +1,136 @@
+<div class="content">
+  <div class="card-login">
+    <div class="card-header bg-usco-vt header-usco-card">
+      <div class="row">
+        <div class="col">
+          <img
+            title="USCO"
+            mat-card-image
+            src="assets/universidad-surcolombiana-multicampos-white.png"
+            class="img-fluid"
+          />
+        </div>
+      </div>
+      <hr class="punteada" />
+      <div class="row">
+        <div class="col">
+          <h6 class="font-weight-bold text-white">
+            VENTANILLA RESTAURANTE <br />
+            INICIO DE SESIÓN
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div class="card-body text-center font-usco-gr">
+      <div class="container">
+        <form [formGroup]="formLogin">
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <span matPrefix class="mr-2"
+                  ><i class="fa-solid fa-user"></i
+                ></span>
+                <mat-label>Usuario</mat-label>
+                <input
+                  matInput
+                  placeholder="Toque el botón 'i' para más información"
+                  autocomplete="off"
+                  formControlName="usuario"
+                  tabindex="1"
+                />
+                <!--  <button mat-icon-button matSuffix (click)="informacion()">
+                  <i class="fa-solid fa-circle-info"></i>
+                </button> -->
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <span matPrefix class="mr-2"
+                  ><i class="fa-solid fa-lock"></i
+                ></span>
+                <mat-label>Contraseña</mat-label>
+                <input
+                  matInput
+                  [type]="hide ? 'password' : 'text'"
+                  formControlName="contrasenia"
+                  type="password"
+                  placeholder="Digite su clave"
+                  tabindex="2"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hide = !hide"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide"
+                  tabindex="4"
+                >
+                  <mat-icon>{{
+                    hide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mt-3 mb-4">
+              <button
+                (click)="login()"
+                type="submit"
+                class="btn btn-usco-vt"
+                tabindex="3"
+                [disabled]="!formLogin.valid"
+              >
+                Ingresar
+                <span
+                  *ngIf="cargando"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-4">
+              <a href="https://www.usco.edu.co/cambio_clave/" target="_blank"
+                ><small class="font-usco-vt font-weight-bold"
+                  >¿Olvidó su contraseña?</small
+                ></a
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-4">
+              <small
+                (click)="informacion()"
+                class="font-usco-vt font-weight-bold cursor-select"
+                ><i class="fa-solid fa-circle-info"></i> Tipos de Usuario</small
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-4">
+              <small
+                [routerLink]="['/instructivo']"
+                routerLinkActive="router-link-active"
+                class="font-usco-vt font-weight-bold cursor-select"
+                ><i class="fa-solid fa-book"></i> Instructivo</small
+              >
+            </div>
+          </div>
+          <div>
+            <small
+              ><b class="version"
+                >© {{ today | date : "yyyy" }} CITCD - Versión 1 Construcción
+                1.1</b
+              ></small
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
