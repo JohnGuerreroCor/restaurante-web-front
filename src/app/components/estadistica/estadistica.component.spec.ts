@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IntercambioComponent } from './intercambio.component';
+import { EstadisticaComponent } from './estadistica.component';
 
-describe('IntercambioComponent', () => {
-  let component: IntercambioComponent;
-  let fixture: ComponentFixture<IntercambioComponent>;
+describe('EstadisticaComponent', () => {
+  let component: EstadisticaComponent;
+  let fixture: ComponentFixture<EstadisticaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ IntercambioComponent ]
+      declarations: [ EstadisticaComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(IntercambioComponent);
+    fixture = TestBed.createComponent(EstadisticaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

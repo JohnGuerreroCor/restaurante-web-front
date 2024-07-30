@@ -13,16 +13,13 @@
       <hr class="punteada" />
       <div class="row">
         <div class="col">
-          <h6 class="font-weight-bold text-white">
-            CARNET DIGITAL <br />
-            TOKEN
-          </h6>
+          <small class="font-weight-bold text-white"> Restaurante web </small>
         </div>
       </div>
     </div>
     <div class="card-body text-center font-usco-gr">
       <div class="container">
-        <form [formGroup]="formToken">
+        <form>
           <div class="row">
             <div class="col">
               <p>
@@ -34,24 +31,26 @@
               </p>
             </div>
           </div>
-          <div class="row pl-5 pr-5">
-            <div class="col">
-              <mat-form-field class="example-full-width">
-                <span matPrefix class="mr-2"
-                  ><i class="fa-solid fa-lock"></i
-                ></span>
-                <mat-label>Código de verificación</mat-label>
-                <input matInput formControlName="token" autocomplete="off" />
-              </mat-form-field>
+          <form [formGroup]="formToken">
+            <div class="row pl-5 pr-5">
+              <div class="col">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <span matPrefix class="p-3"
+                    ><i class="fa-solid fa-lock"></i
+                  ></span>
+                  <mat-label>Código</mat-label>
+                  <input matInput formControlName="token" autocomplete="off" />
+                </mat-form-field>
+              </div>
             </div>
-          </div>
+          </form>
           <div class="row">
-            <div class="col mt-3 mb-4">
+            <div class="col mb-2">
               <button
                 (click)="validarToken()"
                 type="button"
-                [disabled]="!formToken.valid"
                 class="btn btn-usco-vt"
+                [disabled]="!formToken.valid"
               >
                 Validar Token
                 <span
@@ -67,7 +66,7 @@
             <div class="col">
               <small
                 ><b class="version"
-                  >© {{ today | date : "yyyy" }} CITCD - Versión 1 Construcción
+                  >© {{ today | date : "yyyy" }} CITCD - Versión 2 Construcción
                   1.0</b
                 ></small
               >

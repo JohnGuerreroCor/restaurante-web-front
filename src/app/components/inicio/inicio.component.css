@@ -1,0 +1,11 @@
+.card-usco-menu {
+  filter: brightness(100%);
+}
+
+.card-usco-menu:hover {
+  filter: brightness(90%);
+}
+
+.color-icon {
+  color: #4d626c;
+}

@@ -44,22 +44,17 @@ import { PromptUpdateService } from './services/prompt-update.service';
 import { PromptNotificationService } from './services/promtp-notification.service';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { InicioComponent } from './components/inicio/inicio.component';
-import { EstudianteComponent } from './components/estudiante/estudiante.component';
 
 //QR
 import { QRCodeModule } from 'angularx-qrcode';
-import { VirtualComponent } from './components/virtual/virtual.component';
-import { IntercambioComponent } from './components/intercambio/intercambio.component';
-import { PublicoComponent } from './components/publico/publico.component';
-import { DocenteComponent } from './components/docente/docente.component';
-import { AdministrativoComponent } from './components/administrativo/administrativo.component';
-import { GraduadoComponent } from './components/graduado/graduado.component';
 import { InstructivoComponent } from './components/instructivo/instructivo.component';
 import { VentaTiquetesComponent } from './components/venta-tiquetes/venta-tiquetes.component';
 import { CargueInformacionComponent } from './components/cargue-informacion/cargue-informacion.component';
 import { ConsumoTiquetesComponent } from './components/consumo-tiquetes/consumo-tiquetes.component';
 import { TiquetesQrComponent } from './components/tiquetes-qr/tiquetes-qr.component';
-
+import { NotfoundComponent } from './components/notfound/notfound.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { EstadisticaComponent } from './components/estadistica/estadistica.component';
 
 const initializer =
   (promptNotificationService: PromptNotificationService) => () =>
@@ -73,18 +68,13 @@ const initializer =
     PromptInstallComponent,
     NavbarComponent,
     InicioComponent,
-    EstudianteComponent,
-    VirtualComponent,
-    IntercambioComponent,
-    PublicoComponent,
-    DocenteComponent,
-    AdministrativoComponent,
-    GraduadoComponent,
     InstructivoComponent,
     VentaTiquetesComponent,
     CargueInformacionComponent,
     ConsumoTiquetesComponent,
     TiquetesQrComponent,
+    NotfoundComponent,
+    EstadisticaComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -114,6 +104,7 @@ const initializer =
     MatTableModule,
     MatSortModule,
     MatRadioModule,
+    MatTooltipModule,
     MatNativeDateModule,
     ZXingScannerModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -137,4 +128,4 @@ const initializer =
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

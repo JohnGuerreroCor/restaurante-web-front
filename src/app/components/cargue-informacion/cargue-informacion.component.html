@@ -1,121 +1,142 @@
 <app-navbar>
-
-    <u style="color: #8f141b;">
-        <h1 style="margin: 2rem; color: #8f141b; text-align: center;">Cargué de Información</h1>
-    </u>
-
-    <div *ngIf="isContratoVigente; else noActivo">
-
-        <div class="container mt-4">
-            <div class="card">
-                <h5 class="card-header">Cargar información ventas</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <mat-form-field>
-                                <mat-label>Choose a date</mat-label>
-                                <input matInput [matDatepicker]="picker1" [(ngModel)]="currentDate">
-                                <mat-hint>MM/DD/YYYY</mat-hint>
-                                <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
-                            </mat-form-field>
-                            <!--  <mat-form-field class="ml-5">
-                            <mat-label>TipoServicio</mat-label>
-                            <mat-select>
-                                <mat-option *ngFor="let servicio of tiposServicio" [value]="servicio"
-                                    name="tipoServicioVenta" ngDefaultControl [(ngModel)]="tipoServicioSeleccionado">
-                                    {{servicio.nombre}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-                            <mat-form-field class="ml-5">
-                                <mat-label>TipoServicio</mat-label>
-                                <mat-select [(ngModel)]="tipoServicioSeleccionadoVenta" name="tipoServicioVenta">
-                                    <mat-option *ngFor="let servicio of tiposServicio" [value]="servicio">
-                                        {{servicio.nombre}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col">
-                            <label class="file example-full-width shadow mb-3">
-                                <!-- <input type="file" accept=".xlsx" aria-label="File browser example"
-                                [disabled]="!(tipoServicioSeleccionado.codigo > 0)" (change)="subirVentas($event, 1)" /> -->
-                                <input type="file" accept=".xlsx" aria-label="File browser example"
-                                    [disabled]="!(tipoServicioSeleccionadoVenta.codigo > 0)"
-                                    (change)="cargarExcel($event, 1)" />
-
-                                <span class="file-custom text-left">{{ nameFileVenta }} <i
-                                        class="fa-solid fa-file-csv"></i></span>
-                            </label>
-
-                            <button mat-button class="ml-2" (click)="subirVentas(1)" [disabled]="(excelVenta == null)">
-                                <i class="fa-solid fa-paper-plane"></i>
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="container mt-4">
+    <fieldset
+      class="scheduler-border shadow-sm"
+      *ngIf="isContratoVigente; else noActivo"
+    >
+      <legend class="scheduler-border font-usco-vt">
+        Cargar información ventas
+      </legend>
+      <div class="row mt-4">
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Choose a date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker1"
+              [(ngModel)]="currentDate"
+            />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
         </div>
-
-        <div class="container mt-4">
-            <div class="card">
-                <h5 class="card-header">Cargar información consumos</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <mat-form-field>
-                                <mat-label>Choose a date</mat-label>
-                                <input matInput [matDatepicker]="picker2" [(ngModel)]="currentDate">
-                                <mat-hint>MM/DD/YYYY</mat-hint>
-                                <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
-                                <mat-datepicker #picker2></mat-datepicker>
-                            </mat-form-field>
-                            <!-- <mat-form-field class="ml-5">
-                            <mat-label>TipoServicio</mat-label>
-                            <mat-select>
-                                <mat-option *ngFor="let servicio of tiposServicio" [value]="servicio"
-                                    name="tipoServicioConsumo" ngDefaultControl [(ngModel)]="tipoServicioSeleccionado">
-                                    {{servicio.nombre}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-                            <mat-form-field class="ml-5">
-                                <mat-label>TipoServicio</mat-label>
-                                <mat-select [(ngModel)]="tipoServicioSeleccionadoConsumo" name="tipoServicioConsumo">
-                                    <mat-option *ngFor="let servicio of tiposServicio" [value]="servicio">
-                                        {{servicio.nombre}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col">
-                            <label class="file example-full-width shadow mb-3">
-                                <!-- <input type="file" accept=".xlsx" aria-label="File browser example"
-                                [disabled]="!(tipoServicioSeleccionado.codigo > 0)"
-                                (change)="subirConsumos($event, 2)" /> -->
-                                <input type="file" accept=".xlsx" aria-label="File browser example"
-                                    [disabled]="!(tipoServicioSeleccionadoConsumo.codigo > 0)"
-                                    (change)="cargarExcel($event, 2)" />
-
-                                <span class="file-custom text-left">{{ nameFileConsumo }} <i
-                                        class="fa-solid fa-file-csv"></i></span>
-                            </label>
-
-                            <button mat-button class="ml-2" (click)="subirConsumos(2)"
-                                [disabled]="(excelConsumo == null)">
-                                <i class="fa-solid fa-paper-plane"></i>
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>TipoServicio</mat-label>
+            <mat-select
+              [(ngModel)]="tipoServicioSeleccionadoVenta"
+              name="tipoServicioVenta"
+            >
+              <mat-option
+                *ngFor="let servicio of tiposServicio"
+                [value]="servicio"
+              >
+                {{ servicio.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
+        <div class="col pt-1">
+          <label class="file shadow" style="width: 75%">
+            <input
+              type="file"
+              accept=".xlsx"
+              [disabled]="!(tipoServicioSeleccionadoVenta.codigo > 0)"
+              (change)="cargarExcel($event, 1)"
+              aria-label="File browser example"
+            />
+            <span class="file-custom text-left">{{ nameFileVenta }}</span>
+          </label>
+          <button
+            class="btn btn-success ml-4 mt-1"
+            (click)="subirVentas(1)"
+            [disabled]="excelVenta == null"
+            #tooltip="matTooltip"
+            matTooltip="Cargar"
+            matTooltipPosition="below"
+          >
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset
+      class="scheduler-border shadow-sm"
+      *ngIf="isContratoVigente; else noActivo"
+    >
+      <legend class="scheduler-border font-usco-vt">
+        Cargar información consumos
+      </legend>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Choose a date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker2"
+              [(ngModel)]="currentDate"
+            />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>TipoServicio</mat-label>
+            <mat-select
+              [(ngModel)]="tipoServicioSeleccionadoConsumo"
+              name="tipoServicioConsumo"
+            >
+              <mat-option
+                *ngFor="let servicio of tiposServicio"
+                [value]="servicio"
+              >
+                {{ servicio.nombre }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col pt-1">
+          <label class="file shadow" style="width: 75%">
+            <input
+              type="file"
+              accept=".xlsx"
+              aria-label="File browser example"
+              [disabled]="!(tipoServicioSeleccionadoConsumo.codigo > 0)"
+              (change)="cargarExcel($event, 2)"
+            />
+
+            <span class="file-custom text-left">{{ nameFileConsumo }} </span>
+          </label>
+          <button
+            class="btn btn-success ml-4 mt-1"
+            (click)="subirConsumos(2)"
+            [disabled]="excelConsumo == null"
+            #tooltip="matTooltip"
+            matTooltip="Cargar"
+            matTooltipPosition="below"
+          >
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <ng-template #noActivo>
+    <div class="row p-5">
+      <div class="col">
+        <div class="alert alert-warning" role="alert">
+          El modulo no se encuentra habilitado en este momento!
+        </div>
+      </div>
     </div>
-
-    <ng-template #noActivo>
-        <p class="ml-5 mt-5">El modulo no se encuentra habilitado en este momento!</p>
-    </ng-template>
+  </ng-template>
 </app-navbar>

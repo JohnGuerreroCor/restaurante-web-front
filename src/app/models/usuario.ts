@@ -2,10 +2,10 @@ export class Usuario {
   id!: number;
   username!: string;
   password!: string;
-  per_codigo!: number;
-  nombre!: String;
-  apellido!: String;
-  uaa!: String;
+  personaCodigo!: number;
+  personaNombre!: string;
+  personaApellido!: string;
   uaaCodigo!: number;
-  roles : string[] = [];
+  roles: string[] = [];
+  horaInicioSesion!: string;
 }

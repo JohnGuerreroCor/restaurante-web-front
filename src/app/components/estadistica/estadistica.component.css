@@ -1,0 +1,84 @@
+.desayuno {
+  border-radius: 20px;
+  background-color: #25669b;
+}
+
+.desayunoReloj {
+  width: 280px;
+  font-size: 50px;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgba(101, 169, 224, 0.425);
+}
+
+.almuerzo {
+  border-radius: 20px;
+  background-color: #8f141b;
+}
+
+.almuerzoReloj {
+  width: 280px;
+  font-size: 50px;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #bd242b8e;
+}
+
+.cena {
+  border-radius: 20px;
+  background-color: #7c0b69;
+}
+
+.cenaReloj {
+  width: 280px;
+  font-size: 50px;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgba(248, 124, 227, 0.164);
+}
+
+.card-usco-carnet {
+  box-shadow: 0 10px 20px 0 rgb(0 0 0 / 14%) !important;
+  border-radius: 15px !important;
+  color: rgba(0, 0, 0, 0.87);
+  background: #fff;
+  padding-top: 0px !important;
+}
+
+.foto-usco-pc {
+  border: solid 6px white;
+  border-radius: 10px;
+}
+
+.foto-usco {
+  border: solid 6px white;
+  width: 200px;
+  border-radius: 10px;
+}
+
+.dashed {
+  border-bottom: dashed 1px #000000;
+}
+
+.tab-label-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.example-tab-icon {
+  margin-bottom: 5px; /* Ajusta el espaciado entre el icono y el texto */
+}
+
+.nav-tabs {
+  justify-content: center; /* Centrar los tabs */
+}

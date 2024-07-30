@@ -1,0 +1,54 @@
+<div class="content">
+  <div class="card-login">
+    <div class="card-header bg-usco-vt header-usco-card">
+      <div class="row">
+        <div class="col">
+          <img
+            mat-card-image
+            src="assets/universidad-surcolombiana-multicampos-white.png"
+            class="img-fluid"
+          />
+        </div>
+      </div>
+      <hr class="punteada" />
+      <div class="row">
+        <div class="col">
+          <small class="font-weight-bold text-white"> ACCESO DENEGADO </small>
+        </div>
+      </div>
+    </div>
+    <div class="card-body text-center font-usco-gr">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="error-container">
+              <div class="error-code">
+                <i class="fas fa-exclamation-triangle fa-6x text-warning"></i>
+              </div>
+              <h1 class="display-4 mt-2">404</h1>
+              <p class="lead mt-2">
+                No tienes las credenciales necesarias para acceder a esta
+                página.
+              </p>
+              <small>
+                Intente ingresar de nuevo, <br />
+                puede que sus credenciales sean insuficientes o han expirado.
+                <br />
+                Si el problema persiste comuníquese con el equipo de desarrollo
+                del <a href="mailto:ctic@usco.edu.co"> CITCD</a>.
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <a [routerLink]="['/login']" class="btn btn-usco-vt"
+              ><i class="fa-solid fa-arrow-left"></i> Ir a la página de
+              inicio</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

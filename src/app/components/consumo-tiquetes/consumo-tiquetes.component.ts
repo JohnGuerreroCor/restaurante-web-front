@@ -9,7 +9,7 @@ import { ContratoService } from 'src/app/services/contrato.service';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { Estudiante } from 'src/app/models/estudiante';
 import { FotoService } from 'src/app/services/foto.service';
-import swal from 'sweetalert2'
+import swal from 'sweetalert2';
 import { WebparametroService } from 'src/app/services/webparametro.service';
 import Swal from 'sweetalert2';
 import { PublickeyService } from 'src/app/services/publickey.service';
@@ -18,14 +18,20 @@ import { TipoServicio } from 'src/app/models/tipoServicio';
 import { HorarioServicio } from 'src/app/models/horarioServicio';
 import { HorarioServicioService } from 'src/app/services/horario-servicio.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-consumo-tiquetes',
   templateUrl: './consumo-tiquetes.component.html',
-  styleUrls: ['./consumo-tiquetes.component.css']
+  styleUrls: ['./consumo-tiquetes.component.css'],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { subscriptSizing: 'dynamic' },
+    },
+  ],
 })
 export class ConsumoTiquetesComponent {
-
   availableDevices!: MediaDeviceInfo[];
   currentDevice!: MediaDeviceInfo;
   tryHarder = false;
@@ -38,13 +44,14 @@ export class ConsumoTiquetesComponent {
   consumosTiempoReal = 0;
   limiteConsumos = 0;
   codigo = '';
-  imagenURL: string = "https://www.usco.edu.co/imagen-institucional/logo/precarga-usco.gif";
+  imagenURL: string =
+    'https://www.usco.edu.co/imagen-institucional/logo/precarga-usco.gif';
   estudiante: any = {
-    nombre: "...",
-    apellido: "...",
+    nombre: '...',
+    apellido: '...',
     codigo: 0,
     id: 0,
-    programa: ""
+    programa: '',
   };
   sede: Sede = {
     codigo: this.authservice.user.uaaCodigo,
@@ -73,27 +80,27 @@ export class ConsumoTiquetesComponent {
     private webparametroService: WebparametroService,
     private publicKeyService: PublickeyService,
     private horarioServicioService: HorarioServicioService,
-    private ngZone: NgZone,) {
-  }
+    private ngZone: NgZone
+  ) {}
 
   ngOnInit(): void {
-    this.horaServidorService.horaFechaObservable.subscribe((horaFecha: string) => {
-
-      this.ngZone.run(() => {
-        if (horaFecha !== 'No disponible') {
-          this.horaFecha = new Date(horaFecha);
-        }
-        if (!this.isValidated && this.horaFecha != undefined) {
-          this.isValidated = true;
-          this.validarHorarioServicio();
-        }
-      });
-    });
+    this.horaServidorService.horaFechaObservable.subscribe(
+      (horaFecha: string) => {
+        this.ngZone.run(() => {
+          if (horaFecha !== 'No disponible') {
+            this.horaFecha = new Date(horaFecha);
+          }
+          if (!this.isValidated && this.horaFecha != undefined) {
+            this.isValidated = true;
+            this.validarHorarioServicio();
+          }
+        });
+      }
+    );
   }
 
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-
     // Aquí puedes definir el carácter especial que indica el final de la lectura del código de barras
     const endCharacter = '\n'; // Por ejemplo, puede ser un retorno de carro o una combinación específica de teclas
 
@@ -105,9 +112,9 @@ export class ConsumoTiquetesComponent {
 
     this.qrLeidoString += lectura;
 
-    if (this.qrLeidoString.substring(this.qrLeidoString.length - 5) == 'Enter') {
-
-
+    if (
+      this.qrLeidoString.substring(this.qrLeidoString.length - 5) == 'Enter'
+    ) {
       let qrLeidoString = this.qrLeidoString.split('Enter')[0];
 
       this.qrLeidoString = '';
@@ -116,12 +123,12 @@ export class ConsumoTiquetesComponent {
 
       console.log(qrLeidoString);
 
-      this.consumoService.validarConsumo(qrLeidoString).subscribe(
-        (response) => {
+      this.consumoService
+        .validarConsumo(qrLeidoString)
+        .subscribe((response) => {
           this.respuestaConsumo(response);
           this.verificarTiquetesDisponibles();
-        }
-      );
+        });
       this.codigo = '';
 
       /* Swal.fire({
@@ -142,54 +149,71 @@ export class ConsumoTiquetesComponent {
           text: 'lectura satisfactoria!',
           allowOutsideClick: true,
         }) */
-
       });
     }
-
   }
 
   validarHorarioServicio() {
-    this.horarioServicioService.obtenerHorariosServicio().subscribe(
-      horarioServicio => {
+    this.horarioServicioService
+      .obtenerHorariosServicio()
+      .subscribe((horarioServicio) => {
         if (horarioServicio.length > 0) {
           this.validarModuloConsumoActivo(horarioServicio);
         }
-      }
-    );
+      });
   }
 
   verificarTiquetesDisponibles() {
-    this.consumoService.obtenerConsumosDiarios(this.tipoServicio.codigo, this.contratoVigente.codigo).subscribe(
-      cantidad => {
+    this.consumoService
+      .obtenerConsumosDiarios(
+        this.tipoServicio.codigo,
+        this.contratoVigente.codigo
+      )
+      .subscribe((cantidad) => {
         this.consumosTiempoReal = cantidad;
-        var limiteConsumos = this.horarioServicio.find(objeto => objeto.tipoServicio.codigo == this.tipoServicio.codigo)?.cantidadComidas;
+        var limiteConsumos = this.horarioServicio.find(
+          (objeto) => objeto.tipoServicio.codigo == this.tipoServicio.codigo
+        )?.cantidadComidas;
         this.limiteConsumos = limiteConsumos || 0;
         if (limiteConsumos !== undefined && cantidad < limiteConsumos) {
           this.isConsumosDisponibles = true;
         } else {
           this.isConsumosDisponibles = false;
         }
-      }
-    );
+      });
   }
 
   validarModuloConsumoActivo(horarioServicio: HorarioServicio[]) {
-
     this.horarioServicio = horarioServicio;
 
     var objetoEncontrado = horarioServicio.find((objeto) => {
-
       // Convertir las horas de los objetos a Date
-      var horaInicioAtencion = new Date('1970-01-01T' + objeto.horaInicioAtencion);
+      var horaInicioAtencion = new Date(
+        '1970-01-01T' + objeto.horaInicioAtencion
+      );
       var horaFinAtencion = new Date('1970-01-01T' + objeto.horaFinAtencion);
       var horaActual = new Date(this.horaFecha);
 
       // Extraer solo la hora de los objetos Date
-      var horaInicioAtencionSoloHora = horaInicioAtencion.getHours() * 3600 + horaInicioAtencion.getMinutes() * 60 + horaInicioAtencion.getSeconds();
-      var horaFinAtencionSoloHora = horaFinAtencion.getHours() * 3600 + horaFinAtencion.getMinutes() * 60 + horaFinAtencion.getSeconds();
-      var horaActualSoloHora = horaActual.getHours() * 3600 + horaActual.getMinutes() * 60 + horaActual.getSeconds();
+      var horaInicioAtencionSoloHora =
+        horaInicioAtencion.getHours() * 3600 +
+        horaInicioAtencion.getMinutes() * 60 +
+        horaInicioAtencion.getSeconds();
+      var horaFinAtencionSoloHora =
+        horaFinAtencion.getHours() * 3600 +
+        horaFinAtencion.getMinutes() * 60 +
+        horaFinAtencion.getSeconds();
+      var horaActualSoloHora =
+        horaActual.getHours() * 3600 +
+        horaActual.getMinutes() * 60 +
+        horaActual.getSeconds();
 
-      return objeto.uaa.codigo == this.sede.codigo && horaActualSoloHora >= horaInicioAtencionSoloHora && horaActualSoloHora <= horaFinAtencionSoloHora && objeto.estado == 1;
+      return (
+        objeto.uaa.codigo == this.sede.codigo &&
+        horaActualSoloHora >= horaInicioAtencionSoloHora &&
+        horaActualSoloHora <= horaFinAtencionSoloHora &&
+        objeto.estado == 1
+      );
     });
 
     if (objetoEncontrado != null && objetoEncontrado != undefined) {
@@ -200,41 +224,36 @@ export class ConsumoTiquetesComponent {
   }
 
   validarConsumo() {
-
     if (this.codigo == '' || this.codigo == null) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: "El campo no puede estar vacio!"
+        text: 'El campo no puede estar vacio!',
       });
       return;
     }
 
-    this.estudianteService.getEstudiante(this.codigo).subscribe(
-      estudiante => {
-
+    this.estudianteService
+      .getEstudiante(this.codigo)
+      .subscribe((estudiante) => {
         if (estudiante.length > 0 && estudiante != null) {
           this.intentarConsumo(estudiante);
         } else {
-          this.estudianteService.buscarEstudianteIdentifiacion(this.codigo).subscribe(
-            persona => {
-
+          this.estudianteService
+            .buscarEstudianteIdentifiacion(this.codigo)
+            .subscribe((persona) => {
               if (persona.length > 0 && persona != null) {
                 this.intentarConsumo(persona);
               } else {
                 Swal.fire({
                   icon: 'error',
                   title: 'Oops...',
-                  text: "Codigo incorrecto o no existe en la base de datos!"
+                  text: 'Codigo incorrecto o no existe en la base de datos!',
                 });
               }
-            }
-          );
-
+            });
         }
-      }
-    );
-
+      });
   }
 
   respuestaConsumo(response: number) {
@@ -242,7 +261,7 @@ export class ConsumoTiquetesComponent {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: "La persona ya consumió ó no tiene consumos disponibles",
+        text: 'La persona ya consumió ó no tiene consumos disponibles',
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
@@ -253,7 +272,7 @@ export class ConsumoTiquetesComponent {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: "Error al crear el consumo :(",
+        text: 'Error al crear el consumo :(',
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
@@ -264,7 +283,7 @@ export class ConsumoTiquetesComponent {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: "EL QR leido está vencido o es de caracter invalido!",
+        text: 'EL QR leido está vencido o es de caracter invalido!',
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
@@ -275,7 +294,7 @@ export class ConsumoTiquetesComponent {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: "EL contrato al que pertenece el tiquete expiró!",
+        text: 'EL contrato al que pertenece el tiquete expiró!',
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
@@ -283,18 +302,18 @@ export class ConsumoTiquetesComponent {
     }
 
     if (response > 0) {
-
       Swal.fire({
         icon: 'success',
         title: 'Excelente!',
-        text: "Consumo satisfactorio!",
+        text: 'Consumo satisfactorio!',
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
       });
 
-      this.estudianteService.buscarEstudianteIdentifiacion(response).subscribe(
-        persona => {
+      this.estudianteService
+        .buscarEstudianteIdentifiacion(response)
+        .subscribe((persona) => {
           if (persona.length > 0) {
             this.estudiante.nombre = persona[0].persona.nombre;
             this.estudiante.apellido = persona[0].persona.apellido;
@@ -303,57 +322,51 @@ export class ConsumoTiquetesComponent {
             this.estudiante.programa = persona[0].programa.nombreCorto;
 
             this.cargarFoto(persona);
-
           }
-        }
-      );
-
+        });
     }
   }
 
   intentarConsumo(persona: Estudiante[]) {
     const mensajeEnviar = `${persona[0].persona.codigo}`;
-    this.publicKeyService.encrpyt(mensajeEnviar).subscribe(
-      (mensajeEncriptado) => {
-
-        this.consumoService.validarConsumo(mensajeEncriptado).subscribe(
-          (response) => {
+    this.publicKeyService
+      .encrpyt(mensajeEnviar)
+      .subscribe((mensajeEncriptado) => {
+        this.consumoService
+          .validarConsumo(mensajeEncriptado)
+          .subscribe((response) => {
             this.respuestaConsumo(response);
             this.verificarTiquetesDisponibles();
-          }
-        );
+          });
         this.codigo = '';
-      }
-    );
+      });
   }
 
-
   onScanSuccess(result: string) {
-
     if (this.isReadingAllowed == false) {
       return;
     }
 
-    //reemplazamos los - que vienen de la lectura por + 
-    let cadenaReemplazada: string = result.replace(/\-/g, "+");
+    //reemplazamos los - que vienen de la lectura por +
+    let cadenaReemplazada: string = result.replace(/\-/g, '+');
 
-    this.consumoService.validarConsumo(cadenaReemplazada).subscribe(
-      (response) => {
+    this.consumoService
+      .validarConsumo(cadenaReemplazada)
+      .subscribe((response) => {
         this.respuestaConsumo(response);
-      }
-    );
+      });
 
     this.isReadingAllowed = false;
 
     timer(2000).subscribe(() => {
       this.isReadingAllowed = true;
     });
-
   }
 
   onCamerasFound(devices: MediaDeviceInfo[]) {
-
-    this.videoInputDevices = devices.filter(device => device.kind === 'videoinput');
+    this.videoInputDevices = devices.filter(
+      (device) => device.kind === 'videoinput'
+    );
     // Si tienes al menos una cámara, selecciona la primera por defecto
     if (this.videoInputDevices.length > 0) {
       this.selectedDevice = this.videoInputDevices[0];
@@ -365,27 +378,29 @@ export class ConsumoTiquetesComponent {
       if (this.videoInputDevices && this.videoInputDevices.length > 1) {
         // Encuentra el índice actual
 
-        const currentIndex = this.videoInputDevices.indexOf(this.selectedDevice);
+        const currentIndex = this.videoInputDevices.indexOf(
+          this.selectedDevice
+        );
 
         // Cambia al siguiente dispositivo de cámara
-        this.selectedDevice = this.videoInputDevices[(currentIndex + 1) % this.videoInputDevices.length];
+        this.selectedDevice =
+          this.videoInputDevices[
+            (currentIndex + 1) % this.videoInputDevices.length
+          ];
       } else {
         console.warn('No hay suficientes cámaras disponibles para cambiar.');
       }
     }
   }
 
-
   leerQR() {
     console.log('Leer QR');
   }
 
   efectuarConsumo() {
+    console.log('Efectuando consumo');
 
-    console.log("Efectuando consumo");
-
-
-    //debo obtener las ventas del estudiante y segun tipo eliminar la mas antigua 
+    //debo obtener las ventas del estudiante y segun tipo eliminar la mas antigua
     /* this.ventaService.obtenerVentasByPerCodigo(144065, 31).subscribe(
       (ventas) => {
         console.log(ventas);
@@ -430,63 +445,58 @@ export class ConsumoTiquetesComponent {
         console.log(codigo);
       }
     ); */
-
   }
 
   buscarEstudiante() {
-    this.estudianteService.getEstudiante(this.codigo).subscribe(
-      persona => {
-        if (persona.length > 0) {
-          this.estudiante = persona[0];
-          this.efectuarConsumo();
-        }
+    this.estudianteService.getEstudiante(this.codigo).subscribe((persona) => {
+      if (persona.length > 0) {
+        this.estudiante = persona[0];
+        this.efectuarConsumo();
       }
-    );
+    });
   }
 
   cargarFoto(persona: Estudiante[]) {
-    this.fotoService.mirarFoto(persona[0].persona.codigo.toString()).subscribe(
-      data => {
-        var gg = new Blob([data], { type: 'application/json' })
+    this.fotoService
+      .mirarFoto(persona[0].persona.codigo.toString())
+      .subscribe((data) => {
+        var gg = new Blob([data], { type: 'application/json' });
         if (gg.size !== 4) {
           var blob = new Blob([data], { type: 'image/png' });
           const foto = blob;
           const reader = new FileReader();
           reader.onload = () => {
             this.imagenURL = reader.result as string;
-          }
-          reader.readAsDataURL(foto)
-
+          };
+          reader.readAsDataURL(foto);
         } else {
-          this.fotoService.mirarFotoAntigua(persona[0].persona.codigo.toString()).subscribe(data => {
-            this.imagenURL = data.url.toString();
-          });
+          this.fotoService
+            .mirarFotoAntigua(persona[0].persona.codigo.toString())
+            .subscribe((data) => {
+              this.imagenURL = data.url.toString();
+            });
         }
-      }
-    );
+      });
   }
 
   validarContratoVigente() {
-    this.contratoService.obtenerContratoByVigencia().subscribe(
-      contrato => {
-        if (contrato.length > 0) {
-          this.contratoVigente = contrato[0];
-          this.isContratoVigente = true;
-          this.verificarTiquetesDisponibles();
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'No hay contrato vigente!',
-          });
-          this.isContratoVigente = false;
-        }
+    this.contratoService.obtenerContratoByVigencia().subscribe((contrato) => {
+      if (contrato.length > 0) {
+        this.contratoVigente = contrato[0];
+        this.isContratoVigente = true;
+        this.verificarTiquetesDisponibles();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'No hay contrato vigente!',
+        });
+        this.isContratoVigente = false;
       }
-    );
+    });
   }
 
   consultarSemilla() {
-    this.webparametroService.obtenerSemilla().subscribe(data => {
-    });
+    this.webparametroService.obtenerSemilla().subscribe((data) => {});
   }
 }

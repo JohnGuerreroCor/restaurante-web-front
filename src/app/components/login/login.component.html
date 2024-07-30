@@ -14,10 +14,9 @@
       <hr class="punteada" />
       <div class="row">
         <div class="col">
-          <h6 class="font-weight-bold text-white">
-            VENTANILLA RESTAURANTE <br />
-            INICIO DE SESIÓN
-          </h6>
+          <small class="font-weight-bold text-white">
+            VENTANILLA RESTAURANTE
+          </small>
         </div>
       </div>
     </div>
@@ -26,8 +25,8 @@
         <form [formGroup]="formLogin">
           <div class="row">
             <div class="col">
-              <mat-form-field class="example-full-width">
-                <span matPrefix class="mr-2"
+              <mat-form-field class="example-full-width" appearance="outline">
+                <span matPrefix class="p-3"
                   ><i class="fa-solid fa-user"></i
                 ></span>
                 <mat-label>Usuario</mat-label>
@@ -46,8 +45,8 @@
           </div>
           <div class="row">
             <div class="col">
-              <mat-form-field class="example-full-width">
-                <span matPrefix class="mr-2"
+              <mat-form-field class="example-full-width" appearance="outline">
+                <span matPrefix class="p-3"
                   ><i class="fa-solid fa-lock"></i
                 ></span>
                 <mat-label>Contraseña</mat-label>
@@ -75,7 +74,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col mt-3 mb-4">
+            <div class="col mb-2">
               <button
                 (click)="login()"
                 type="submit"
@@ -94,7 +93,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col mb-4">
+            <div class="col mb-2">
               <a href="https://www.usco.edu.co/cambio_clave/" target="_blank"
                 ><small class="font-usco-vt font-weight-bold"
                   >¿Olvidó su contraseña?</small
@@ -103,29 +102,25 @@
             </div>
           </div>
           <div class="row">
-            <div class="col mb-4">
-              <small
-                (click)="informacion()"
-                class="font-usco-vt font-weight-bold cursor-select"
-                ><i class="fa-solid fa-circle-info"></i> Tipos de Usuario</small
-              >
-            </div>
-          </div>
-          <div class="row">
-            <div class="col mb-4">
-              <small
-                [routerLink]="['/instructivo']"
-                routerLinkActive="router-link-active"
-                class="font-usco-vt font-weight-bold cursor-select"
-                ><i class="fa-solid fa-book"></i> Instructivo</small
+            <div class="col mb-2">
+              <small class="font-usco-vt font-weight-bold cursor-select"
+                ><a (click)="informacion()"
+                  ><i class="fa-solid fa-circle-info"></i> Tipos de Usuario</a
+                >
+                |
+                <spam
+                  [routerLink]="['/instructivo']"
+                  routerLinkActive="router-link-active"
+                  ><i class="fa-solid fa-book"></i> Instructivo</spam
+                ></small
               >
             </div>
           </div>
           <div>
             <small
               ><b class="version"
-                >© {{ today | date : "yyyy" }} CITCD - Versión 1 Construcción
-                1.1</b
+                >© {{ today | date : "yyyy" }} CITCD - Versión 2 Construcción
+                1.2</b
               ></small
             >
           </div>

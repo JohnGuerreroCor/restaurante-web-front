@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublicoComponent } from './publico.component';
+import { NotfoundComponent } from './notfound.component';
 
-describe('PublicoComponent', () => {
-  let component: PublicoComponent;
-  let fixture: ComponentFixture<PublicoComponent>;
+describe('NotfoundComponent', () => {
+  let component: NotfoundComponent;
+  let fixture: ComponentFixture<NotfoundComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PublicoComponent ]
+      declarations: [ NotfoundComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PublicoComponent);
+    fixture = TestBed.createComponent(NotfoundComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

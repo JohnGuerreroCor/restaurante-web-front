@@ -12,11 +12,37 @@ import { WebparametroService } from 'src/app/services/webparametro.service';
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.css']
+  styleUrls: ['./inicio.component.css'],
 })
 export class InicioComponent implements OnInit {
+  links = [
+    {
+      titulo: 'Venta',
+      ruta: '/ventaTiquetes',
+      icono: 'fa-solid fa-shop fa-8x p-4 text-center color-icon color-icon',
+      info: 'Este módulo se encarga de establecer los horarios de venta y atención en el restaurante, garantizando una gestión eficiente del tiempo.',
+    },
+    {
+      titulo: 'Consumo',
+      ruta: '/consumoTiquetes',
+      icono: 'fa-solid fa-utensils fa-8x p-4 text-center color-icon',
+      info: 'Actualmente en construcción, este módulo en el futuro será responsable de llevar un registro histórico de las ventas y consumos para un determinado día.',
+    },
+    {
+      titulo: 'Cargue informacion',
+      ruta: '/cargueInformacion',
+      icono: 'fa-solid fa-truck-ramp-box fa-8x p-4 text-center color-icon',
+      info: 'Módulo dedicado a la parametrización contractual, gestionando contratos vigentes, pasados y futuros.',
+    },
+    {
+      titulo: 'Estadísticas',
+      ruta: '/estadisticas-restaurante',
+      icono: 'fa-solid fa-chart-pie fa-8x p-4 text-center color-icon',
+      info: 'Módulo dedicado a la parametrización contractual, gestionando contratos vigentes, pasados y futuros.',
+    },
+  ];
 
-  public perCodigo: number = this.auth.user.per_codigo;
+  public perCodigo: number = this.auth.user.personaCodigo;
 
   resizeObservable!: Observable<Event>;
   resizeSubscription!: Subscription;
@@ -39,8 +65,8 @@ export class InicioComponent implements OnInit {
     public auth: AuthService,
     public estamentoService: EstamentoService,
     private router: Router,
-    public ubicacionService: UbicacionService,
-  ) { }
+    public ubicacionService: UbicacionService
+  ) {}
 
   ngOnInit() {
     if (!this.auth.isAuthenticated()) {
@@ -50,14 +76,16 @@ export class InicioComponent implements OnInit {
     }
     this.anio = this.fecha.getUTCFullYear();
 
-    if (window.screen.width <= 950) { // 768px portrait
+    if (window.screen.width <= 950) {
+      // 768px portrait
       this.mobile = true;
     } else {
       this.mobile = false;
     }
     this.resizeObservable = fromEvent(window, 'resize');
-    this.resizeSubscription = this.resizeObservable.subscribe(evt => {
-      if (window.screen.width <= 950) { // 768px portrait
+    this.resizeSubscription = this.resizeObservable.subscribe((evt) => {
+      if (window.screen.width <= 950) {
+        // 768px portrait
         this.mobile = true;
       } else {
         this.mobile = false;
@@ -74,33 +102,27 @@ export class InicioComponent implements OnInit {
       icon: 'error',
       title: 'Oops...',
       text: 'Ocurrio Un Error!',
-    })
-
+    });
   }
 
   mensajeSuccses() {
     Swal.fire({
-
       icon: 'success',
       title: 'Proceso Realizado',
       showConfirmButton: false,
-      timer: 1500
-    })
+      timer: 1500,
+    });
   }
 
   fError(er: any): void {
-
     let err = er.error.error_description;
-    let arr: string[] = err.split(":");
+    let arr: string[] = err.split(':');
 
-    if (arr[0] == "Access token expired") {
-
+    if (arr[0] == 'Access token expired') {
       this.auth.logout();
       this.router.navigate(['login']);
-
     } else {
       this.mensajeError();
     }
-
   }
 }

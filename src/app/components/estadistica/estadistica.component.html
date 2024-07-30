@@ -1,0 +1,159 @@
+<app-navbar>
+  <div class="container slide-in-fwd-center">
+    <div class="row p-3">
+      <div class="col">
+        <div
+          class="card-usco-carnet carnet-usco-body pl-2 pr-2 shadow text-center"
+        >
+          <div class="row pt-2">
+            <div class="col p-4">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Restaurante</mat-label>
+                <mat-select
+                  [(value)]="sede"
+                  (selectionChange)="
+                    obtenerTiquetesSedes(); obtenerRacionesSedes()
+                  "
+                >
+                  <mat-option
+                    class="p-2"
+                    *ngFor="let item of sedes"
+                    [value]="item.uaaCodigo"
+                    >{{ item.uaaNombre }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div
+            class="row text-white pl-3 pr-3"
+            *ngIf="(tiquetes | json) != '[]'"
+          >
+            <div
+              class="col"
+              [ngClass]="{
+                desayuno: tiquetes[0]!.restauranteTipoServicioCodigo == 1,
+                almuerzo: tiquetes[0]!.restauranteTipoServicioCodigo == 2,
+                cena: tiquetes[0]!.restauranteTipoServicioCodigo == 3
+              }"
+            >
+              <div class="row">
+                <div class="col">
+                  <div
+                    class="mt-4 mb-3"
+                    [ngClass]="{
+                      desayunoReloj:
+                        tiquetes[0]!.restauranteTipoServicioCodigo == 1,
+                      almuerzoReloj:
+                        tiquetes[0]!.restauranteTipoServicioCodigo == 2,
+                      cenaReloj: tiquetes[0]!.restauranteTipoServicioCodigo == 3
+                    }"
+                  >
+                    {{hoy | date: 'dd-MM-yyyy'}} <br> {{ hora }}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col" style="border: solid white 1px">
+                  <div class="container pt-4 pb-4">
+                    <!-- #003561 -->
+
+                    <img
+                      src="assets/tiquete.png"
+                      alt="USCO"
+                      style="width: 130px"
+                    />
+                    <!--  <i class="fa-solid fa-utensils fa-3x mr-3"></i
+                    ><i class="fa-solid fa-bowl-food fa-3x"></i> -->
+                    <h1 class="font-weight-bold" style="font-size: 60px">
+                      {{ tiquetes[0]!.restauranteCantidaTiquetesDisponibles }}
+                    </h1>
+
+                    <h5 class="font-weight-bold">TIQUETES DISPONIBLES</h5>
+                    <h5 class="font-weight-bold">
+                      {{
+                        tiquetes[0]!.restauranteTipoServicioNombre | uppercase
+                      }}
+                    </h5>
+                    <br />
+                    <p style="font-size: 12px">
+                      Hora de servicio
+                      {{ tiquetes[0]!.restauranteHoraServicioInicio }}
+                      - {{ tiquetes[0]!.restauranteHoraServicioFin }}
+                    </p>
+                    <p style="font-size: 12px">
+                      {{ tiquetes[0]!.uaaRestauranteNombre }}
+                    </p>
+                  </div>
+                </div>
+                <div class="col" style="border: solid white 1px">
+                  <div class="container pt-2 pb-4">
+                    <img
+                      src="assets/racion.png"
+                      alt="USCO"
+                      style="width: 120px"
+                    />
+                    <!--  <i class="fa-solid fa-utensils fa-3x mr-3"></i
+                      ><i class="fa-solid fa-bowl-food fa-3x"></i> -->
+                    <h1 class="font-weight-bold" style="font-size: 60px">
+                      {{ raciones[0]!.restauranteCantidaRacionesDisponibles }}
+                    </h1>
+
+                    <h5 class="font-weight-bold">RACIONES DISPONIBLES</h5>
+                    <h5 class="font-weight-bold">
+                      {{
+                        raciones[0]!.restauranteTipoServicioNombre | uppercase
+                      }}
+                    </h5>
+                    <br />
+                    <p style="font-size: 12px">
+                      Hora de atención
+                      {{ raciones[0]!.restauranteHoraServicioInicio }}
+                      - {{ raciones[0]!.restauranteHoraServicioFin }}
+                    </p>
+                    <p style="font-size: 12px">
+                      {{ raciones[0]!.uaaRestauranteNombre }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="alert alert-light">
+                <p style="font-size: 18px">
+                  Convenciones<br /><i
+                    class="fas fa-stop"
+                    style="color: #003561"
+                  ></i>
+                  Desayuno |
+                  <i class="fas fa-stop" style="color: #8f141b"> </i>
+                  Almuerzo |
+                  <i class="fas fa-stop" style="color: #7c0b69"></i>
+                  Cena
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="row pl-2 pr-2">
+            <div class="col">
+              <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading font-weight-bold">¡Por favor!</h4>
+                <p>
+                  Seleccione la sede en la cual se encuentra actualmente o la
+                  sede a la cual se dirige para consultar la disponibilidad.
+                </p>
+                <hr />
+                <p class="mb-0">
+                  Tenga en cuenta que el tiquete adquirido solo puede ser usado
+                  donde se hizo efectiva la compra, agradecemos su atención.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-navbar>

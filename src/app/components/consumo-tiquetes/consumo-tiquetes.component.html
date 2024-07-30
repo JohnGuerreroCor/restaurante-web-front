@@ -1,100 +1,140 @@
 <app-navbar>
-
-    <div class="container">
-
-
-        <div class="col-md-12">
-            <h1>Módulo Consumo</h1>
-            <h2>{{ horaFecha | date: 'dd/MM/yyyy HH:mm:ss' }} - {{tipoServicio.nombre}}</h2>
-            <h2>Alimentos consumidos - {{ consumosTiempoReal }}/<span
-                style="color: red;">{{limiteConsumos}}</span></h2>
+  <div class="container mt-4">
+    <fieldset
+      class="scheduler-border shadow-sm"
+      *ngIf="
+        isConsumoActivo && isContratoVigente && isConsumosDisponibles;
+        else noActivo
+      "
+    >
+      <legend class="scheduler-border font-usco-vt">Consumo</legend>
+      <div class="row">
+        <div class="col">
+          <div class="reloj-digital p-2">
+            {{ horaFecha | date : "dd/MM/yyyy HH:mm:ss" }} <br />
+            {{ tipoServicio.nombre }}
+          </div>
         </div>
-
-        <div *ngIf="isConsumoActivo && isContratoVigente && isConsumosDisponibles; else noActivo">
-
-            <div class="row">
-
-                <div class="col d-flex justify-content-center mx-auto">
-                    <mat-card style="max-width: 400px;">
-                        <mat-card-content class="">
-                            <div class="row">
-                                <div class="col-md-8" style="font-weight: bold;">
-                                    Leer QR
-                                </div>
-                                <div class="col pb-3 text-center">
-                                    <button mat-fab extended (click)="switchCamera()" style="background-color: black;">
-                                        <i class="fa-solid fa-repeat"></i> | <i class="fa-solid fa-camera"></i></button>
-                                </div>
-                            </div>
-                        </mat-card-content>
-
-                        <div class="scanner-container">
-                            <zxing-scanner [(device)]="selectedDevice" [formats]="allowedFormats"
-                                (scanSuccess)="onScanSuccess($event)" (camerasFound)="onCamerasFound($event)">
-                            </zxing-scanner>
-
-                            <!-- Agregar overlay/guía visual aquí -->
-                            <div class="scanner-overlay"></div>
-                        </div>
-
-                        <!-- <mat-card-actions class="d-flex justify-content-center mt-2 mb-2">
-                            <button mat-button (click)="leerQR()"><i
-                                    class="fa-solid fa-rotate-right fa-2xl"></i></button>
-                            <button mat-button (click)="validarConsumo()"><i
-                                    class="fa-solid fa-check fa-2xl"></i></button>
-                        </mat-card-actions> -->
-                    </mat-card>
-                </div>
-            </div>
-
-            <div class="row mt-5">
-                <div class="col">
-                    <mat-card style="max-width: 800px; margin: auto;">
-                        <mat-form-field>
-                            <input matInput placeholder="Código o ID estudiante" [(ngModel)]="codigo"
-                                (keyup.enter)="validarConsumo()">
-                            <button *ngIf="codigo" matSuffix mat-icon-button aria-label="Clear" class="mr-1"
-                                (click)="codigo=''">
-                                <mat-icon>close</mat-icon>
-                            </button>
-                            <button matSuffix mat-icon-button aria-label="Clear" (click)="validarConsumo()">
-                                <mat-icon>send</mat-icon>
-                            </button>
-                        </mat-form-field>
-                    </mat-card>
-                </div>
-
-            </div>
-
-            <div class="row mt-5">
-                <div class="col">
-                    <mat-card style="max-width: 800px; margin: auto;">
-                        <mat-card-header>
-                            <mat-card-title>Datos del Estudiante</mat-card-title>
-                        </mat-card-header>
-                        <mat-card-content>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src={{imagenURL}} alt="Documento de Identidad" class="img-fluid">
-                                </div>
-                                <div class="col-md-5">
-                                    <p><strong>Nombre:</strong> {{estudiante.nombre}}</p>
-                                    <p><strong>Apellido:</strong> {{estudiante.apellido}} </p>
-                                    <p><strong>Código Estudiantil:</strong> {{estudiante.codigo}}</p>
-                                    <p><strong>Identificación:</strong> {{estudiante.id}}</p>
-                                    <p><strong>Programa:</strong> {{estudiante.programa}}</p>
-
-                                </div>
-                            </div>
-                        </mat-card-content>
-                    </mat-card>
-                </div>
-            </div>
-
+        <div class="col">
+          <div class="reloj-digital p-2">
+            Alimentos consumidos <br />
+            {{ consumosTiempoReal }}/{{ limiteConsumos }}
+          </div>
         </div>
-        <ng-template #noActivo>
-            <p>El modulo no se encuentra habilitado en este momento!</p>
-        </ng-template>
-
-    </div>
+      </div>
+      <hr />
+      <fieldset class="scheduler-border shadow-sm">
+        <legend class="scheduler-border font-usco-vt">Leer QR</legend>
+        <div class="row text-center">
+          <div class="col">
+            <button class="btn btn-dark" extended (click)="switchCamera()">
+              <i class="fa-solid fa-repeat"></i> |
+              <i class="fa-solid fa-camera"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col">
+            <zxing-scanner
+              [(device)]="selectedDevice"
+              [formats]="allowedFormats"
+              (scanSuccess)="onScanSuccess($event)"
+              (camerasFound)="onCamerasFound($event)"
+              style="width: 240px; margin: auto"
+            >
+            </zxing-scanner>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <input
+                matInput
+                placeholder="Código o ID estudiante"
+                [(ngModel)]="codigo"
+                (keyup.enter)="validarConsumo()"
+              />
+              <button matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-usco-vt btn-block"
+              (click)="validarConsumo()"
+            >
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </fieldset>
+    </fieldset>
+    <fieldset
+      class="scheduler-border shadow-sm"
+      *ngIf="isConsumoActivo && isContratoVigente && isConsumosDisponibles"
+    >
+      <legend class="scheduler-border font-usco-vt">
+        Datos del estudiante
+      </legend>
+      <div class="row">
+        <div
+          class="col-sm-3 text-center pt-4 mb-4"
+          *ngIf="
+            imagenURL ===
+            'https://www.usco.edu.co/imagen-institucional/logo/precarga-usco.gif'
+          "
+        >
+          <img src="{{ imagenURL }}" class="img-fluid" />
+        </div>
+        <div
+          class="col-sm-3 text-center mb-4"
+          *ngIf="
+            imagenURL !==
+            'https://www.usco.edu.co/imagen-institucional/logo/precarga-usco.gif'
+          "
+        >
+          <img src="{{ imagenURL }}" class="img-fluid" />
+        </div>
+        <div class="col">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col" colspan="2">Estudiante</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Nombre:</th>
+                <td>{{ estudiante.nombre }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Apellido:</th>
+                <td>{{ estudiante.apellido }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Código estudiantil:</th>
+                <td>{{ estudiante.codigo }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Identificación:</th>
+                <td>{{ estudiante.id }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Programa:</th>
+                <td>{{ estudiante.programa }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </fieldset>
+    <ng-template #noActivo>
+      <div class="alert alert-warning" role="alert">
+        ¡El modulo no se encuentra habilitado en este momento!
+      </div>
+    </ng-template>
+  </div>
 </app-navbar>
