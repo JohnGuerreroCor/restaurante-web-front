@@ -69,6 +69,7 @@ export class VentaTiquetesComponent {
   isValidated = false;
   imagenURL: string = "https://www.usco.edu.co/imagen-institucional/logo/precarga-usco.gif";
   isGabu: boolean = false;
+  gabusVendidos: number = 0;
   tiposServicioGratisGabus = [0, 0, 0];
 
   constructor(private ventaService: VentaService,
@@ -127,8 +128,9 @@ export class VentaTiquetesComponent {
         const venta = new Venta();
         venta.codigo = element.codigo;
         venta.estado = 0;
+        venta.eliminado = 0;
 
-        this.ventaService.actualizarVenta(venta).subscribe(
+        this.ventaService.eliminarVenta(venta).subscribe(
           venta => {
 
             if (venta != 0) {
@@ -232,6 +234,7 @@ export class VentaTiquetesComponent {
           venta.estado = 1;
           venta.fecha = new Date().toISOString().slice(0, 10);
           venta.hora = new Date().toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19);
+          venta.eliminado = 1
 
 
           if (venta.tipoServicio.codigo == 1 && this.tiquetesComprados[0] + parseInt(this.numeroRacionesVender.toString()) > this.horarioServicio[0].cantidadTiquetes) {
@@ -349,7 +352,7 @@ export class VentaTiquetesComponent {
   }
 
   verificarTiquetesDisponibles() {
-    this.ventaService.obtenerVentasDiarias(this.tipoServicio.codigo, this.contratoVigente.codigo).subscribe(
+    this.ventaService.obtenerVentasDiariasOrdinarias(this.tipoServicio.codigo, this.contratoVigente.codigo).subscribe(
       cantidad => {
         this.ventasTiempoReal = cantidad;
         var limiteTiquetes = this.horarioServicio.find(objeto => objeto.tipoServicio.codigo == this.tipoServicio.codigo)?.cantidadVentasPermitidas;
@@ -362,6 +365,13 @@ export class VentaTiquetesComponent {
         }
       }
     );
+
+    this.ventaService.obtenerVentasDiariasGabus(this.tipoServicio.codigo, this.contratoVigente.codigo).subscribe(
+      cantidad => {
+        this.gabusVendidos = cantidad;
+
+      }
+    )
   }
 
   validarContratoVigente() {

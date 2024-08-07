@@ -14,4 +14,5 @@ export class Consumo {
     estado!: number;
     fecha!: string;
     hora!: string;
+    eliminado!: number;
 }

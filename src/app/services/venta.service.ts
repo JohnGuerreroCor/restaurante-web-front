@@ -58,9 +58,24 @@ export class VentaService {
       );
   }
 
-  obtenerVentasDiarias(codigoTipoServicio: number, codigoContrato: number): Observable<number> {
+  obtenerVentasDiariasOrdinarias(codigoTipoServicio: number, codigoContrato: number): Observable<number> {
     return this.http
-      .get<number>(`${this.url}/venta/obtener-ventas-diarias/${codigoTipoServicio}/${codigoContrato}`, {
+      .get<number>(`${this.url}/venta/obtener-ventas-diarias-ordinarias/${codigoTipoServicio}/${codigoContrato}`, {
+        headers: this.aggAutorizacionHeader(),
+      })
+      .pipe(
+        catchError((e) => {
+          if (this.isNoAutorizado(e)) {
+            return throwError(e);
+          }
+          return throwError(e);
+        })
+      );
+  }
+
+  obtenerVentasDiariasGabus(codigoTipoServicio: number, codigoContrato: number): Observable<number> {
+    return this.http
+      .get<number>(`${this.url}/venta/obtener-ventas-diarias-gabus/${codigoTipoServicio}/${codigoContrato}`, {
         headers: this.aggAutorizacionHeader(),
       })
       .pipe(
@@ -92,6 +107,14 @@ export class VentaService {
   actualizarVenta(venta: Venta): Observable<number> {
     return this.http.put<number>(
       `${this.url}/venta/actualizar-venta/${this.userLogeado}`,
+      venta,
+      { headers: this.aggAutorizacionHeader() }
+    );
+  }
+
+  eliminarVenta(venta: Venta): Observable<number> {
+    return this.http.put<number>(
+      `${this.url}/venta/eliminar-venta/${this.userLogeado}`,
       venta,
       { headers: this.aggAutorizacionHeader() }
     );

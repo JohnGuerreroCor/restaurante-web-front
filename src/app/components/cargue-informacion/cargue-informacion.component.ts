@@ -217,7 +217,8 @@ export class CargueInformacionComponent {
                 dependencia: { codigo: this.uaa, sedeNombre: "", municipioCodigo: 0, sedeNombreCorto: "" },
                 estado: 1,
                 fecha: this.currentDate.toISOString().slice(0, 10),
-                hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19)
+                hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19),
+                eliminado: 1
               };
               ventas.push(venta);
             } else if (tipoCargue == 2) {
@@ -231,14 +232,16 @@ export class CargueInformacionComponent {
                   dependencia: { codigo: 0, sedeNombre: "", municipioCodigo: 0, sedeNombreCorto: "" },
                   estado: 1,
                   fecha: this.currentDate.toISOString().slice(0, 10),
-                  hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19)
+                  hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19),
+                  eliminado: 1
                 },
                 tipoServicio: { codigo: this.tipoServicioSeleccionadoConsumo.codigo, nombre: "", estado: 1 },
                 contrato: { codigo: this.contratoVigente.codigo, tipoContrato: { codigo: 0, nombre: "", descripcion: "", estado: 1 }, fechaInicial: "", fechaFinal: "", valorContrato: 0, subsidioDesayuno: 0, subsidioAlmuerzo: 0, subsidioCena: 0, pagoEstudianteDesayuno: 0, pagoEstudianteAlmuerzo: 0, pagoEstudianteCena: 0, cantidadDesayunos: 0, cantidadAlmuerzos: 0, cantidadCenas: 0, dependencia: { codigo: 0, sedeNombre: "", municipioCodigo: 0, sedeNombreCorto: "" }, estado: 1, isEditing: false },
                 dependencia: { codigo: this.uaa, sedeNombre: "", municipioCodigo: 0, sedeNombreCorto: "" },
                 estado: 1,
                 fecha: this.currentDate.toISOString().slice(0, 10),
-                hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19)
+                hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19),
+                eliminado: 1
               };
               consumos.push(consumo);
             }
