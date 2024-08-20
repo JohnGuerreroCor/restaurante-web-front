@@ -66,6 +66,10 @@ export class CargueInformacionComponent {
 
     ventas = await this.listarExcel(this.excelVenta, tipoCargue);
 
+    ventas.forEach(venta => {
+      console.log(venta.codigo)
+    })
+
     if (ventas.length <= 0) {
       Swal.fire({
         icon: 'error',
@@ -173,7 +177,7 @@ export class CargueInformacionComponent {
       if (event.target.files[0] !== undefined) {
         this.excelVenta = event.target.files[0];
         this.nameFileVenta = this.excelVenta.name;
-      }
+      } 
     } else if (tipoCargue === 2) {
       if (event.target.files[0] !== undefined) {
         this.excelConsumo = event.target.files[0];
@@ -205,7 +209,7 @@ export class CargueInformacionComponent {
           // Iterar sobre las celdas de la fila actual
           for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
             const cell = row[columnIndex];
-            console.log(cell); // Aquí puedes hacer lo que necesites con cada celda
+            console.log(cell); 
             registros.push(cell);
 
             if (tipoCargue == 1) {

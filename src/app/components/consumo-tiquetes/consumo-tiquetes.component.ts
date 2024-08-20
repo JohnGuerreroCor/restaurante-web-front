@@ -3,13 +3,11 @@ import { BehaviorSubject, timer } from 'rxjs';
 import { BarcodeFormat } from '@zxing/library';
 import { ConsumoService } from 'src/app/services/consumo.service';
 import { Contrato } from 'src/app/models/contrato';
-import { VentaService } from 'src/app/services/venta.service';
-import { HoraServidorService } from 'src/app/services/hora-servidor.service';
+
 import { ContratoService } from 'src/app/services/contrato.service';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { Estudiante } from 'src/app/models/estudiante';
 import { FotoService } from 'src/app/services/foto.service';
-import swal from 'sweetalert2';
 import { WebparametroService } from 'src/app/services/webparametro.service';
 import Swal from 'sweetalert2';
 import { PublickeyService } from 'src/app/services/publickey.service';
@@ -72,7 +70,7 @@ export class ConsumoTiquetesComponent {
 
   constructor(
     private consumoService: ConsumoService,
-    private horaServidorService: HoraServidorService,
+
     private contratoService: ContratoService,
     private estudianteService: EstudianteService,
     private authservice: AuthService,
@@ -84,19 +82,18 @@ export class ConsumoTiquetesComponent {
   ) {}
 
   ngOnInit(): void {
-    this.horaServidorService.horaFechaObservable.subscribe(
-      (horaFecha: string) => {
+      
         this.ngZone.run(() => {
-          if (horaFecha !== 'No disponible') {
-            this.horaFecha = new Date(horaFecha);
-          }
+          
+            this.horaFecha = new Date();
+          
           if (!this.isValidated && this.horaFecha != undefined) {
             this.isValidated = true;
             this.validarHorarioServicio();
           }
         });
-      }
-    );
+      
+    
   }
 
   @HostListener('document:keypress', ['$event'])
@@ -257,11 +254,22 @@ export class ConsumoTiquetesComponent {
   }
 
   respuestaConsumo(response: number) {
+
+    if (response == -1000) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error interno de servidor, comuniquese con el Ing alejo cabarcas',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
     if (response == 0) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'La persona ya consumió ó no tiene consumos disponibles',
+        text: 'La persona ya consumió!',
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
@@ -295,6 +303,56 @@ export class ConsumoTiquetesComponent {
         icon: 'error',
         title: 'Oops...',
         text: 'EL contrato al que pertenece el tiquete expiró!',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
+    if (response == -4) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'La persona no tiene tiquetes disponibles',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
+    if (response == -5) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'EL QR leido está corrupto ó modificado!',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
+    if (response == -6) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error horario servicio, comuniquese con el Ing alejo cabarcas',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
+    if (response == -7) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Tiquete Vencido!',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
+    if (response == -8) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error tipo servicio, comuniquese con el Ing alejo cabarcas',
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
@@ -347,6 +405,10 @@ export class ConsumoTiquetesComponent {
       return;
     }
 
+    console.log("resultado de la lectura");
+    console.log(result);
+    
+
     //reemplazamos los - que vienen de la lectura por +
     let cadenaReemplazada: string = result.replace(/\-/g, '+');
 
@@ -395,65 +457,6 @@ export class ConsumoTiquetesComponent {
 
   leerQR() {
     console.log('Leer QR');
-  }
-
-  efectuarConsumo() {
-    console.log('Efectuando consumo');
-
-    //debo obtener las ventas del estudiante y segun tipo eliminar la mas antigua
-    /* this.ventaService.obtenerVentasByPerCodigo(144065, 31).subscribe(
-      (ventas) => {
-        console.log(ventas);
-
-        // Verificar si hay ventas
-        if (ventas && ventas.length > 0) {
-          // Ordenar las ventas por fecha de forma ascendente (la más antigua primero)
-          ventas.sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
-
-          // Obtener la venta más antigua
-          const ventaMasAntigua = ventas[0];
-          console.log('Venta más antigua:', ventaMasAntigua);
-        } else {
-          alert('El individuo no tiene tiquetes disponibles para consumir!');
-        }
-      }
-    ); */
-
-    //registrar consumos
-    /* let consumo: Consumo = new Consumo();
-    consumo.persona = {
-      codigo: 144065,
-    } as any;
-    consumo.venta = {
-      codigo: 31,
-    } as any;
-    consumo.tipoServicio = {
-      codigo: 1,
-    } as any;
-    consumo.contrato = {
-      codigo: 31,
-    } as any;
-    consumo.dependencia = {
-      codigo: 645,
-    } as any;
-    consumo.estado = 1;
-    consumo.fecha = '2021-06-20';
-    consumo.hora = '10:00:00';
-
-    this.consumoService.registrarConsumo(consumo).subscribe(
-      (codigo: number) => {
-        console.log(codigo);
-      }
-    ); */
-  }
-
-  buscarEstudiante() {
-    this.estudianteService.getEstudiante(this.codigo).subscribe((persona) => {
-      if (persona.length > 0) {
-        this.estudiante = persona[0];
-        this.efectuarConsumo();
-      }
-    });
   }
 
   cargarFoto(persona: Estudiante[]) {

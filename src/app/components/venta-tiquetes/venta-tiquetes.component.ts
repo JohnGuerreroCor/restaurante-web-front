@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, NgZone, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Contrato } from 'src/app/models/contrato';
 import { Estudiante } from 'src/app/models/estudiante';
@@ -11,12 +11,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ContratoService } from 'src/app/services/contrato.service';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { HorarioServicioService } from 'src/app/services/horario-servicio.service';
-import { TipoServicioService } from 'src/app/services/tipo-servicio.service';
 import { VentaService } from 'src/app/services/venta.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { HoraServidorService } from 'src/app/services/hora-servidor.service';
 import swal from 'sweetalert2'
 import Swal from 'sweetalert2';
 import { FotoService } from 'src/app/services/foto.service';
@@ -24,8 +22,6 @@ import { GrupoGabuService } from 'src/app/services/grupo-gabu.service';
 import { GrupoGabu } from 'src/app/models/grupoGabu';
 import { DiaBeneficioService } from 'src/app/services/dia-beneficio.service';
 import { DiaBeneficio } from 'src/app/models/diaBeneficio';
-import { Subscription } from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
 
 const ELEMENT_DATA: TablaVenta[] = [
   /*  { codigo: '1', fecha: '2021-10-12', hora: '10:00:00' }, */
@@ -75,16 +71,14 @@ export class VentaTiquetesComponent {
   constructor(private ventaService: VentaService,
     private estudianteService: EstudianteService,
     private horarioServicioService: HorarioServicioService,
-    private tipoServicioService: TipoServicioService,
     private contratoService: ContratoService,
     private authservice: AuthService,
     private _liveAnnouncer: LiveAnnouncer,
-    private horaServidorService: HoraServidorService,
     private ngZone: NgZone,
     private fotoService: FotoService,
     private grupoGabuService: GrupoGabuService,
     private diaBeneficioService: DiaBeneficioService,
-    private router: Router) {
+    ) {
     this.estudiante.codigo = '';
     this.estudiante.codigoPrograma = 0;
     this.estudiante.fechaIngreso = new Date();
@@ -96,19 +90,18 @@ export class VentaTiquetesComponent {
   }
 
   ngOnInit(): void {
-
-    this.horaServidorService.horaFechaObservable.subscribe((horaFecha: string) => {
-
+   
       this.ngZone.run(() => {
-        if (horaFecha !== 'No disponible') {
-          this.horaFecha = new Date(horaFecha);
-        }
+        
+          this.horaFecha = new Date();
+        
         if (!this.isValidated && this.horaFecha != undefined) {
           this.isValidated = true;
           this.validarHorarioServicio();
         }
       });
-    });
+    
+
   }
 
 
