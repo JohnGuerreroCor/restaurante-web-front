@@ -47,4 +47,8 @@ export class EstudianteService {
   buscarEstudianteIdentifiacion(id: any): Observable<Estudiante[]> {
     return this.http.get<Estudiante[]>(`${this.url}/buscar-estudiante-identificacion/${id}`, { headers: this.aggAutorizacionHeader() });
   }
+
+  buscarEstudiantePerCodigo(percodigo: any): Observable<Estudiante[]> {
+    return this.http.get<Estudiante[]>(`${this.url}/buscar-estudiante-percodigo/${percodigo}`, { headers: this.aggAutorizacionHeader() });
+  }
 }

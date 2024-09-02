@@ -8,20 +8,29 @@
       "
     >
       <legend class="scheduler-border font-usco-vt">Consumo</legend>
-      <div class="row">
+      <div class="row mb-2">
         <div class="col">
           <div class="reloj-digital p-2">
-            {{ horaFecha | date : "dd/MM/yyyy HH:mm:ss" }} <br />
-            {{ tipoServicio.nombre }}
-          </div>
-        </div>
-        <div class="col">
-          <div class="reloj-digital p-2">
-            Alimentos consumidos <br />
-            {{ consumosTiempoReal }}/{{ limiteConsumos }}
+            {{ tipoServicio.nombre }} <br>
+            <!--<span style="font-size: 16px;">{{ horaFecha | date : "dd/MM/yyyy" }}</span><br />-->
           </div>
         </div>
       </div>
+        <div class="row">
+          <div class="col">
+            <div class="reloj-digital p-2">
+              Alimentos consumidos <br />
+              {{ consumosTiempoReal }}/{{ limiteConsumos }}
+            </div>
+          </div>
+          <div class="col">
+            <div class="reloj-digital p-2">
+              Gabus consumidos <br />
+              {{ gabusConsumidos }}
+            </div>
+          </div>
+       </div>
+
       <hr />
       <fieldset class="scheduler-border shadow-sm">
         <legend class="scheduler-border font-usco-vt">Leer QR</legend>

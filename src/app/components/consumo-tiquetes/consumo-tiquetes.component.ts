@@ -41,6 +41,7 @@ export class ConsumoTiquetesComponent {
   isContratoVigente: boolean = false;
   consumosTiempoReal = 0;
   limiteConsumos = 0;
+  gabusConsumidos: number = 0;
   codigo = '';
   imagenURL: string =
     'https://www.usco.edu.co/imagen-institucional/logo/precarga-usco.gif';
@@ -178,6 +179,12 @@ export class ConsumoTiquetesComponent {
           this.isConsumosDisponibles = false;
         }
       });
+
+      this.consumoService.obtenerConsumosDiariosGabus(this.tipoServicio.codigo, this.contratoVigente.codigo).subscribe(
+        cantidad => {
+          this.gabusConsumidos = cantidad;
+        }
+      )
   }
 
   validarModuloConsumoActivo(horarioServicio: HorarioServicio[]) {
@@ -370,7 +377,7 @@ export class ConsumoTiquetesComponent {
       });
 
       this.estudianteService
-        .buscarEstudianteIdentifiacion(response)
+        .buscarEstudiantePerCodigo(response)
         .subscribe((persona) => {
           if (persona.length > 0) {
             this.estudiante.nombre = persona[0].persona.nombre;
@@ -453,10 +460,6 @@ export class ConsumoTiquetesComponent {
         console.warn('No hay suficientes cámaras disponibles para cambiar.');
       }
     }
-  }
-
-  leerQR() {
-    console.log('Leer QR');
   }
 
   cargarFoto(persona: Estudiante[]) {
