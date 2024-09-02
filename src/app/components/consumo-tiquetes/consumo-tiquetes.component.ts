@@ -17,6 +17,15 @@ import { HorarioServicio } from 'src/app/models/horarioServicio';
 import { HorarioServicioService } from 'src/app/services/horario-servicio.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { TablaConsumo } from 'src/app/models/tabla-consumo';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+
+const ELEMENT_DATA: TablaConsumo[] = [
+
+];
 
 @Component({
   selector: 'app-consumo-tiquetes',
@@ -30,6 +39,13 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
   ],
 })
 export class ConsumoTiquetesComponent {
+
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns: string[] = ['codigo', 'fecha', 'hora', 'tipoServicio'];
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   availableDevices!: MediaDeviceInfo[];
   currentDevice!: MediaDeviceInfo;
   tryHarder = false;
@@ -72,6 +88,7 @@ export class ConsumoTiquetesComponent {
   constructor(
     private consumoService: ConsumoService,
 
+    private _liveAnnouncer: LiveAnnouncer,
     private contratoService: ContratoService,
     private estudianteService: EstudianteService,
     private authservice: AuthService,
@@ -237,16 +254,21 @@ export class ConsumoTiquetesComponent {
       return;
     }
 
+    let perCodigo: number;
+    ELEMENT_DATA.length = 0;
+
     this.estudianteService
       .getEstudiante(this.codigo)
       .subscribe((estudiante) => {
         if (estudiante.length > 0 && estudiante != null) {
+          perCodigo = estudiante[0].persona.codigo;
           this.intentarConsumo(estudiante);
         } else {
           this.estudianteService
             .buscarEstudianteIdentifiacion(this.codigo)
             .subscribe((persona) => {
               if (persona.length > 0 && persona != null) {
+                perCodigo = estudiante[0].persona.codigo;
                 this.intentarConsumo(persona);
               } else {
                 Swal.fire({
@@ -256,7 +278,27 @@ export class ConsumoTiquetesComponent {
                 });
               }
             });
-        }
+        } 
+
+        this.consumoService.obtenerConsumosByPerCodigo(perCodigo, this.contratoVigente.codigo).subscribe(
+          (consumos) => {
+
+            consumos.forEach(element => {
+              let consumo = new TablaConsumo();
+              consumo.codigo = element.codigo;
+              consumo.fecha = element.fecha;
+              consumo.hora = element.hora;
+              consumo.nombreTipoServicio = element.tipoServicio.nombre;
+              ELEMENT_DATA.push(consumo);
+            });
+    
+            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+
+          }
+        );
+
       });
   }
 
@@ -505,4 +547,22 @@ export class ConsumoTiquetesComponent {
   consultarSemilla() {
     this.webparametroService.obtenerSemilla().subscribe((data) => {});
   }
+
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
 }

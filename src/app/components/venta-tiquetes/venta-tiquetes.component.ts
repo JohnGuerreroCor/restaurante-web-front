@@ -296,10 +296,6 @@ export class VentaTiquetesComponent {
 
         }
 
-        console.log("ventas");
-        console.log(ventas);
-
-
         this.ventaService.registrarVentas(ventas).subscribe(
           venta => {
 
