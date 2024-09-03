@@ -10,6 +10,9 @@ import { ConsumoTiquetesComponent } from './components/consumo-tiquetes/consumo-
 import { TiquetesQrComponent } from './components/tiquetes-qr/tiquetes-qr.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { EstadisticaComponent } from './components/estadistica/estadistica.component';
+import { ReportesComponent } from './components/reportes/reportes.component';
+import { VentaComponent } from './components/reportes/venta/venta.component';
+import { ConsumoComponent } from './components/reportes/consumo/consumo.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -28,6 +31,10 @@ const routes: Routes = [
   { path: 'acceso-denegado', component: NotfoundComponent },
 
   { path: 'estadisticas-restaurante', component: EstadisticaComponent },
+
+  { path: 'reporte', component: ReportesComponent },
+  { path: 'reporte-ventas', component: VentaComponent },
+  { path: 'reporte-consumos', component: ConsumoComponent },
 
   { path: '**', redirectTo: 'acceso-denegado' },
 ];

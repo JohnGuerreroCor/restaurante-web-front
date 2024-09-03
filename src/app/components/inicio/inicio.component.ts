@@ -40,6 +40,12 @@ export class InicioComponent implements OnInit {
       icono: 'fa-solid fa-chart-pie fa-8x p-4 text-center color-icon',
       info: 'Módulo dedicado a la parametrización contractual, gestionando contratos vigentes, pasados y futuros.',
     },
+    {
+      titulo: 'Reportes',
+      ruta: '/reporte',
+      icono: 'fa-solid fa-file-csv fa-8x p-4 text-center color-icon',
+      info: 'Módulo dedicado a la parametrización contractual, gestionando contratos vigentes, pasados y futuros.',
+    },
   ];
 
   public perCodigo: number = this.auth.user.personaCodigo;

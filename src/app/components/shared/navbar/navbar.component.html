@@ -115,6 +115,15 @@
       </li>
       <li class="nav-item item-usco active">
         <a
+          class="nav-link font-usco-default"
+          [routerLink]="['/reporte']"
+          routerLinkActive="router-link-active"
+        >
+          <i class="fa-solid fa-file-csv"></i> Reportes</a
+        >
+      </li>
+      <li class="nav-item item-usco active">
+        <a
           class="nav-link font-usco-default cursor-select"
           (click)="informacion()"
           ><i class="fa-solid fa-circle-question"></i> Sesión</a

@@ -55,6 +55,9 @@ import { TiquetesQrComponent } from './components/tiquetes-qr/tiquetes-qr.compon
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EstadisticaComponent } from './components/estadistica/estadistica.component';
+import { VentaComponent } from './components/reportes/venta/venta.component';
+import { ConsumoComponent } from './components/reportes/consumo/consumo.component';
+import { ReportesComponent } from './components/reportes/reportes.component';
 
 const initializer =
   (promptNotificationService: PromptNotificationService) => () =>
@@ -75,6 +78,9 @@ const initializer =
     TiquetesQrComponent,
     NotfoundComponent,
     EstadisticaComponent,
+    VentaComponent,
+    ConsumoComponent,
+    ReportesComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

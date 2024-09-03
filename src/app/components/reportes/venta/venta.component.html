@@ -1,0 +1,116 @@
+<app-navbar>
+  <div class="container mt-4">
+    <fieldset class="scheduler-border shadow-sm">
+      <legend class="scheduler-border font-usco-vt">
+        Criterios de búsqueda
+      </legend>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Sede</mat-label>
+            <mat-select>
+              <mat-option class="p-2" value="1">Opción uno</mat-option>
+              <mat-option class="p-2" value="2">Opción dos</mat-option>
+              <mat-option class="p-2" value="3">Opción tres</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Contrato</mat-label>
+            <mat-select>
+              <mat-option class="p-2" value="1">Opción uno</mat-option>
+              <mat-option class="p-2" value="2">Opción dos</mat-option>
+              <mat-option class="p-2" value="3">Opción tres</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Tipo de servicio</mat-label>
+            <mat-select>
+              <mat-option class="p-2" value="1">Opción uno</mat-option>
+              <mat-option class="p-2" value="2">Opción dos</mat-option>
+              <mat-option class="p-2" value="3">Opción tres</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Campo de búsqueda</mat-label>
+              <input matInput #input maxlength="50" type="text" required />
+              <button matSuffix mat-icon-button>
+                <mat-icon>search</mat-icon>
+              </button>
+              <mat-hint align="end">{{ input.value.length }}/50</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="scheduler-border shadow-sm">
+      <legend class="scheduler-border font-usco-vt">Reporte</legend>
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="table table-hover shadow-sm"
+      >
+        <ng-container matColumnDef="codigo">
+          <th mat-header-cell *matHeaderCellDef>No</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            {{ dataSource.filteredData.indexOf(element) + 1 }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="sede">
+          <th mat-header-cell *matHeaderCellDef>Sede</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.sedeNombre }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="servicio">
+          <th mat-header-cell *matHeaderCellDef>Servicio</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.tipoServicioNombre }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.fecha }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="hora">
+          <th mat-header-cell *matHeaderCellDef>Hora</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.hora }}
+          </td>
+        </ng-container>
+        <!-- editar -->
+        <ng-container matColumnDef="editar">
+          <th mat-header-cell *matHeaderCellDef>Editar</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="example-button-container">
+              <button class="btn btn-usco-vt btn-sm">
+                <i class="fas fa-pencil-alt fa-xs"></i>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+      ></mat-paginator>
+    </fieldset>
+  </div>
+</app-navbar>
