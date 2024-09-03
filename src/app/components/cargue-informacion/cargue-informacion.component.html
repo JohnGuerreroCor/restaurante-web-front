@@ -10,7 +10,7 @@
       <div class="row mt-4">
         <div class="col">
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Choose a date</mat-label>
+            <mat-label>Seleccione una fecha</mat-label>
             <input
               matInput
               [matDatepicker]="picker1"
@@ -40,19 +40,20 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col pt-1">
-          <label class="file shadow" style="width: 75%">
+        <div class="col pt-1 d-flex align-items-center">
+          <label class="file shadow" style="flex-grow: 1; width: auto;">
             <input
               type="file"
               accept=".xlsx"
               [disabled]="!(tipoServicioSeleccionadoVenta.codigo > 0)"
               (change)="cargarExcel($event, 1)"
               aria-label="File browser example"
+              style="width: 100%; display: block; padding: 0.5rem;"
             />
             <span class="file-custom text-left">{{ nameFileVenta }}</span>
           </label>
           <button
-            class="btn btn-success ml-4 mt-1"
+            class="btn btn-success ml-2"
             (click)="subirVentas(1)"
             [disabled]="excelVenta == null"
             #tooltip="matTooltip"
@@ -62,6 +63,7 @@
             <i class="fa-solid fa-paper-plane"></i>
           </button>
         </div>
+        
       </div>
     </fieldset>
     <fieldset
@@ -74,7 +76,7 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Choose a date</mat-label>
+            <mat-label>Seleccione una fecha</mat-label>
             <input
               matInput
               [matDatepicker]="picker2"
@@ -104,20 +106,20 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col pt-1">
-          <label class="file shadow" style="width: 75%">
+        <div class="col pt-1 d-flex align-items-center">
+          <label class="file shadow" style="flex-grow: 1; width: auto;">
             <input
               type="file"
               accept=".xlsx"
               aria-label="File browser example"
               [disabled]="!(tipoServicioSeleccionadoConsumo.codigo > 0)"
               (change)="cargarExcel($event, 2)"
+              style="width: 100%; display: block; padding: 0.5rem;"
             />
-
-            <span class="file-custom text-left">{{ nameFileConsumo }} </span>
+            <span class="file-custom text-left">{{ nameFileConsumo }}</span>
           </label>
           <button
-            class="btn btn-success ml-4 mt-1"
+            class="btn btn-success ml-2"
             (click)="subirConsumos(2)"
             [disabled]="excelConsumo == null"
             #tooltip="matTooltip"
@@ -127,6 +129,8 @@
             <i class="fa-solid fa-paper-plane"></i>
           </button>
         </div>
+        
+        
       </div>
     </fieldset>
   </div>

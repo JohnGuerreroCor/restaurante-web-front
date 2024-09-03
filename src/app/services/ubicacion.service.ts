@@ -7,8 +7,7 @@ import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 import { Sede } from '../models/sede';
 import { SubSede } from '../models/sub-sede';
-import { Bloque } from '../models/bloque';
-import { Oficina } from '../models/oficina';
+
 
 @Injectable({
   providedIn: 'root'
@@ -64,30 +63,9 @@ export class UbicacionService {
     );
   }
 
-  obtenerBloques(): Observable<Bloque[]> {
-    return this.http.get<Bloque[]>(`${this.url}/obtener-bloques/${this.userLogeado}`, { headers: this.aggAutorizacionHeader() }).pipe(
-      catchError(e => {
-        if (this.isNoAutorizado(e)) {
-          return throwError(e);
-        }
-        return throwError(e);
-      })
-    );
-  }
-
-  obtenerOficinas(): Observable<Oficina[]> {
-    return this.http.get<Oficina[]>(`${this.url}/obtener-oficina/${this.userLogeado}`, { headers: this.aggAutorizacionHeader() });
-  }
 
   buscarSubSedes(codigo: number): Observable<SubSede[]> {
     return this.http.get<SubSede[]>(`${this.url}/buscar-subsede/${codigo}/${this.userLogeado}`, { headers: this.aggAutorizacionHeader() });
   }
 
-  buscarBloques(codigo: number): Observable<Bloque[]> {
-    return this.http.get<Bloque[]>(`${this.url}/buscar-bloque/${codigo}/${this.userLogeado}`, { headers: this.aggAutorizacionHeader() });
-  }
-
-  buscarOficinas(codigo: number): Observable<Oficina[]> {
-    return this.http.get<Oficina[]>(`${this.url}/buscar-oficina/${codigo}/${this.userLogeado}`, { headers: this.aggAutorizacionHeader() });
-  }
 }

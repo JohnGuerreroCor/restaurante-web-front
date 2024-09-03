@@ -73,6 +73,21 @@ export class ConsumoService {
       );
   }
 
+  obtenerConsumosDiariosGabus(codigoTipoServicio: number, codigoContrato: number){
+    return this.http
+    .get<number>(`${this.url}/consumo/obtener-consumos-diarios-gabus/${codigoTipoServicio}/${codigoContrato}`, {
+      headers: this.aggAutorizacionHeader(),
+    })
+    .pipe(
+      catchError((e) => {
+        if (this.isNoAutorizado(e)) {
+          return throwError(e);
+        }
+        return throwError(e);
+      })
+    );
+  }
+
   registrarConsumo(consumo: Consumo): Observable<number> {
     return this.http.post<number>(
       `${this.url}/consumo/crear-consumo/${this.userLogeado}`,

@@ -99,7 +99,7 @@ export class NavbarComponent implements OnInit {
     let horaInicioSesionDate = new Date(this.horaInicioSesion + 'Z');
 
     // Sumar dos horas a la hora de inicio de sesión
-    horaInicioSesionDate.setHours(horaInicioSesionDate.getHours() + 1);
+    horaInicioSesionDate.setHours(horaInicioSesionDate.getHours() + 5);
 
     // Convertir la nueva hora a una cadena en el mismo formato
     this.horaFinSesion = horaInicioSesionDate

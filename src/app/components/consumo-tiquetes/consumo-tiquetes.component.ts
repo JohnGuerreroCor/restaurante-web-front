@@ -3,13 +3,11 @@ import { BehaviorSubject, timer } from 'rxjs';
 import { BarcodeFormat } from '@zxing/library';
 import { ConsumoService } from 'src/app/services/consumo.service';
 import { Contrato } from 'src/app/models/contrato';
-import { VentaService } from 'src/app/services/venta.service';
-import { HoraServidorService } from 'src/app/services/hora-servidor.service';
+
 import { ContratoService } from 'src/app/services/contrato.service';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { Estudiante } from 'src/app/models/estudiante';
 import { FotoService } from 'src/app/services/foto.service';
-import swal from 'sweetalert2';
 import { WebparametroService } from 'src/app/services/webparametro.service';
 import Swal from 'sweetalert2';
 import { PublickeyService } from 'src/app/services/publickey.service';
@@ -19,6 +17,15 @@ import { HorarioServicio } from 'src/app/models/horarioServicio';
 import { HorarioServicioService } from 'src/app/services/horario-servicio.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { TablaConsumo } from 'src/app/models/tabla-consumo';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+
+const ELEMENT_DATA: TablaConsumo[] = [
+
+];
 
 @Component({
   selector: 'app-consumo-tiquetes',
@@ -32,6 +39,13 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
   ],
 })
 export class ConsumoTiquetesComponent {
+
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns: string[] = ['codigo', 'fecha', 'hora', 'tipoServicio'];
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   availableDevices!: MediaDeviceInfo[];
   currentDevice!: MediaDeviceInfo;
   tryHarder = false;
@@ -43,6 +57,7 @@ export class ConsumoTiquetesComponent {
   isContratoVigente: boolean = false;
   consumosTiempoReal = 0;
   limiteConsumos = 0;
+  gabusConsumidos: number = 0;
   codigo = '';
   imagenURL: string =
     'https://www.usco.edu.co/imagen-institucional/logo/precarga-usco.gif';
@@ -72,7 +87,8 @@ export class ConsumoTiquetesComponent {
 
   constructor(
     private consumoService: ConsumoService,
-    private horaServidorService: HoraServidorService,
+
+    private _liveAnnouncer: LiveAnnouncer,
     private contratoService: ContratoService,
     private estudianteService: EstudianteService,
     private authservice: AuthService,
@@ -84,19 +100,18 @@ export class ConsumoTiquetesComponent {
   ) {}
 
   ngOnInit(): void {
-    this.horaServidorService.horaFechaObservable.subscribe(
-      (horaFecha: string) => {
+      
         this.ngZone.run(() => {
-          if (horaFecha !== 'No disponible') {
-            this.horaFecha = new Date(horaFecha);
-          }
+          
+            this.horaFecha = new Date();
+          
           if (!this.isValidated && this.horaFecha != undefined) {
             this.isValidated = true;
             this.validarHorarioServicio();
           }
         });
-      }
-    );
+      
+    
   }
 
   @HostListener('document:keypress', ['$event'])
@@ -181,6 +196,12 @@ export class ConsumoTiquetesComponent {
           this.isConsumosDisponibles = false;
         }
       });
+
+      this.consumoService.obtenerConsumosDiariosGabus(this.tipoServicio.codigo, this.contratoVigente.codigo).subscribe(
+        cantidad => {
+          this.gabusConsumidos = cantidad;
+        }
+      )
   }
 
   validarModuloConsumoActivo(horarioServicio: HorarioServicio[]) {
@@ -233,16 +254,21 @@ export class ConsumoTiquetesComponent {
       return;
     }
 
+    let perCodigo: number;
+    ELEMENT_DATA.length = 0;
+
     this.estudianteService
       .getEstudiante(this.codigo)
       .subscribe((estudiante) => {
         if (estudiante.length > 0 && estudiante != null) {
+          perCodigo = estudiante[0].persona.codigo;
           this.intentarConsumo(estudiante);
         } else {
           this.estudianteService
             .buscarEstudianteIdentifiacion(this.codigo)
             .subscribe((persona) => {
               if (persona.length > 0 && persona != null) {
+                perCodigo = estudiante[0].persona.codigo;
                 this.intentarConsumo(persona);
               } else {
                 Swal.fire({
@@ -252,16 +278,47 @@ export class ConsumoTiquetesComponent {
                 });
               }
             });
-        }
+        } 
+
+        this.consumoService.obtenerConsumosByPerCodigo(perCodigo, this.contratoVigente.codigo).subscribe(
+          (consumos) => {
+
+            consumos.forEach(element => {
+              let consumo = new TablaConsumo();
+              consumo.codigo = element.codigo;
+              consumo.fecha = element.fecha;
+              consumo.hora = element.hora;
+              consumo.nombreTipoServicio = element.tipoServicio.nombre;
+              ELEMENT_DATA.push(consumo);
+            });
+    
+            this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+
+          }
+        );
+
       });
   }
 
   respuestaConsumo(response: number) {
+
+    if (response == -1000) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error interno de servidor, comuniquese con el Ing alejo cabarcas',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
     if (response == 0) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'La persona ya consumió ó no tiene consumos disponibles',
+        text: 'La persona ya consumió!',
         timer: 2000,
         timerProgressBar: true,
         showConfirmButton: false,
@@ -300,6 +357,56 @@ export class ConsumoTiquetesComponent {
         showConfirmButton: false,
       });
     }
+    if (response == -4) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'La persona no tiene tiquetes disponibles',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
+    if (response == -5) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'EL QR leido está corrupto ó modificado!',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
+    if (response == -6) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error horario servicio, comuniquese con el Ing alejo cabarcas',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
+    if (response == -7) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Tiquete Vencido!',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
+    if (response == -8) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Error tipo servicio, comuniquese con el Ing alejo cabarcas',
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    }
 
     if (response > 0) {
       Swal.fire({
@@ -312,7 +419,7 @@ export class ConsumoTiquetesComponent {
       });
 
       this.estudianteService
-        .buscarEstudianteIdentifiacion(response)
+        .buscarEstudiantePerCodigo(response)
         .subscribe((persona) => {
           if (persona.length > 0) {
             this.estudiante.nombre = persona[0].persona.nombre;
@@ -346,6 +453,10 @@ export class ConsumoTiquetesComponent {
     if (this.isReadingAllowed == false) {
       return;
     }
+
+    console.log("resultado de la lectura");
+    console.log(result);
+    
 
     //reemplazamos los - que vienen de la lectura por +
     let cadenaReemplazada: string = result.replace(/\-/g, '+');
@@ -393,69 +504,6 @@ export class ConsumoTiquetesComponent {
     }
   }
 
-  leerQR() {
-    console.log('Leer QR');
-  }
-
-  efectuarConsumo() {
-    console.log('Efectuando consumo');
-
-    //debo obtener las ventas del estudiante y segun tipo eliminar la mas antigua
-    /* this.ventaService.obtenerVentasByPerCodigo(144065, 31).subscribe(
-      (ventas) => {
-        console.log(ventas);
-
-        // Verificar si hay ventas
-        if (ventas && ventas.length > 0) {
-          // Ordenar las ventas por fecha de forma ascendente (la más antigua primero)
-          ventas.sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
-
-          // Obtener la venta más antigua
-          const ventaMasAntigua = ventas[0];
-          console.log('Venta más antigua:', ventaMasAntigua);
-        } else {
-          alert('El individuo no tiene tiquetes disponibles para consumir!');
-        }
-      }
-    ); */
-
-    //registrar consumos
-    /* let consumo: Consumo = new Consumo();
-    consumo.persona = {
-      codigo: 144065,
-    } as any;
-    consumo.venta = {
-      codigo: 31,
-    } as any;
-    consumo.tipoServicio = {
-      codigo: 1,
-    } as any;
-    consumo.contrato = {
-      codigo: 31,
-    } as any;
-    consumo.dependencia = {
-      codigo: 645,
-    } as any;
-    consumo.estado = 1;
-    consumo.fecha = '2021-06-20';
-    consumo.hora = '10:00:00';
-
-    this.consumoService.registrarConsumo(consumo).subscribe(
-      (codigo: number) => {
-        console.log(codigo);
-      }
-    ); */
-  }
-
-  buscarEstudiante() {
-    this.estudianteService.getEstudiante(this.codigo).subscribe((persona) => {
-      if (persona.length > 0) {
-        this.estudiante = persona[0];
-        this.efectuarConsumo();
-      }
-    });
-  }
-
   cargarFoto(persona: Estudiante[]) {
     this.fotoService
       .mirarFoto(persona[0].persona.codigo.toString())
@@ -499,4 +547,22 @@ export class ConsumoTiquetesComponent {
   consultarSemilla() {
     this.webparametroService.obtenerSemilla().subscribe((data) => {});
   }
+
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
 }

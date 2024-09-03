@@ -66,6 +66,10 @@ export class CargueInformacionComponent {
 
     ventas = await this.listarExcel(this.excelVenta, tipoCargue);
 
+    ventas.forEach(venta => {
+      console.log(venta.codigo)
+    })
+
     if (ventas.length <= 0) {
       Swal.fire({
         icon: 'error',
@@ -173,7 +177,7 @@ export class CargueInformacionComponent {
       if (event.target.files[0] !== undefined) {
         this.excelVenta = event.target.files[0];
         this.nameFileVenta = this.excelVenta.name;
-      }
+      } 
     } else if (tipoCargue === 2) {
       if (event.target.files[0] !== undefined) {
         this.excelConsumo = event.target.files[0];
@@ -205,7 +209,7 @@ export class CargueInformacionComponent {
           // Iterar sobre las celdas de la fila actual
           for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
             const cell = row[columnIndex];
-            console.log(cell); // Aquí puedes hacer lo que necesites con cada celda
+            console.log(cell); 
             registros.push(cell);
 
             if (tipoCargue == 1) {
@@ -217,7 +221,8 @@ export class CargueInformacionComponent {
                 dependencia: { codigo: this.uaa, sedeNombre: "", municipioCodigo: 0, sedeNombreCorto: "" },
                 estado: 1,
                 fecha: this.currentDate.toISOString().slice(0, 10),
-                hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19)
+                hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19),
+                eliminado: 1
               };
               ventas.push(venta);
             } else if (tipoCargue == 2) {
@@ -231,14 +236,16 @@ export class CargueInformacionComponent {
                   dependencia: { codigo: 0, sedeNombre: "", municipioCodigo: 0, sedeNombreCorto: "" },
                   estado: 1,
                   fecha: this.currentDate.toISOString().slice(0, 10),
-                  hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19)
+                  hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19),
+                  eliminado: 1
                 },
                 tipoServicio: { codigo: this.tipoServicioSeleccionadoConsumo.codigo, nombre: "", estado: 1 },
                 contrato: { codigo: this.contratoVigente.codigo, tipoContrato: { codigo: 0, nombre: "", descripcion: "", estado: 1 }, fechaInicial: "", fechaFinal: "", valorContrato: 0, subsidioDesayuno: 0, subsidioAlmuerzo: 0, subsidioCena: 0, pagoEstudianteDesayuno: 0, pagoEstudianteAlmuerzo: 0, pagoEstudianteCena: 0, cantidadDesayunos: 0, cantidadAlmuerzos: 0, cantidadCenas: 0, dependencia: { codigo: 0, sedeNombre: "", municipioCodigo: 0, sedeNombreCorto: "" }, estado: 1, isEditing: false },
                 dependencia: { codigo: this.uaa, sedeNombre: "", municipioCodigo: 0, sedeNombreCorto: "" },
                 estado: 1,
                 fecha: this.currentDate.toISOString().slice(0, 10),
-                hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19)
+                hora: this.currentDate.toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19),
+                eliminado: 1
               };
               consumos.push(consumo);
             }

@@ -12,4 +12,5 @@ export class Venta {
     estado!: number;
     fecha!: string;
     hora!: string;
+    eliminado!: number;
 }

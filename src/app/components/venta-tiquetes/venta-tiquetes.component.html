@@ -5,17 +5,25 @@
       *ngIf="isContratoVigente; else noActivo"
     >
       <legend class="scheduler-border font-usco-vt">Venta</legend>
-      <div class="row">
+      <div class="row mb-2">
         <div class="col">
           <div class="reloj-digital p-2">
-            {{ horaFecha | date : "dd/MM/yyyy HH:mm:ss" }} <br />
-            {{ tipoServicio.nombre }}
+            {{ tipoServicio.nombre }} <br>
+            <!--<span style="font-size: 16px;">{{ horaFecha | date : "dd/MM/yyyy" }}</span>-->
           </div>
         </div>
+      </div>
+      <div class="row">
         <div class="col">
           <div class="reloj-digital p-2">
             Tiquetes vendidos <br />
             {{ ventasTiempoReal }}/{{ limiteTiquetesVenta }}
+          </div>
+        </div>
+        <div class="col">
+          <div class="reloj-digital p-2">
+            Gabus vendidos <br />
+            {{ gabusVendidos }}
           </div>
         </div>
       </div>
