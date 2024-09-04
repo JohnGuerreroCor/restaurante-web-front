@@ -41,10 +41,13 @@ export class ReportesService {
     return false;
   }
 
-  obtenerReporteVentas(): Observable<ReporteVenta[]> {
+  obtenerReporteVentas(
+    inicio: any,
+    fin: any
+  ): Observable<ReporteVenta[]> {
     return this.http
       .get<ReporteVenta[]>(
-        `${this.url}/obtener-reporte-ventas`,
+        `${this.url}/obtener-reporte-ventas/${this.sedeCodigo}/${inicio}/${fin}`,
         {
           headers: this.aggAutorizacionHeader(),
         }

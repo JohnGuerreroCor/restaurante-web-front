@@ -1,6 +1,9 @@
 export class ReporteVenta {
   codigo!: number;
   personaCodigo!: number;
+  personaIdentificacion!: string;
+  personaNombre!: string;
+  gabu!: string;
   tipoServicioCodigo!: number;
   tipoServicioNombre!: string;
   contratoCodig!: number;

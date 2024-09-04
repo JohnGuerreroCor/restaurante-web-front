@@ -113,14 +113,25 @@
           <i class="fa-solid fa-chart-pie"></i> Estadísticas</a
         >
       </li>
-      <li class="nav-item item-usco active">
+      <li class="nav-item item-usco active dropdown">
         <a
-          class="nav-link font-usco-default"
-          [routerLink]="['/reporte']"
-          routerLinkActive="router-link-active"
+          class="nav-link dropdown-toggle"
+          href="#"
+          role="button"
+          data-toggle="dropdown"
+          aria-expanded="false"
         >
-          <i class="fa-solid fa-file-csv"></i> Reportes</a
-        >
+          <i class="fa-solid fa-file-csv"></i> Reportes
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" [routerLink]="['/reporte-ventas']"
+            ><i class="fa-solid fa-shop"></i> Venta</a
+          >
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" [routerLink]="['/reporte-consumos']"
+            ><i class="fa-solid fa-utensils"></i> Consumo</a
+          >
+        </div>
       </li>
       <li class="nav-item item-usco active">
         <a

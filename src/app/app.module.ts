@@ -1,34 +1,15 @@
-import { NgModule, isDevMode, APP_INITIALIZER } from '@angular/core';
+import { NgModule, isDevMode, APP_INITIALIZER, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-//ANGULAR MATERIAL
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
-import { MatCardModule } from '@angular/material/card';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatTableModule } from '@angular/material/table';
-import { MatSortModule } from '@angular/material/sort';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DatePipe } from '@angular/common';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { registerLocaleData } from '@angular/common';
+import localeEsCO from '@angular/common/locales/es-CO';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import { MaterialModules } from './material.modules';
 
 //COMPONENTES
 import { AppComponent } from './app.component';
@@ -53,11 +34,12 @@ import { CargueInformacionComponent } from './components/cargue-informacion/carg
 import { ConsumoTiquetesComponent } from './components/consumo-tiquetes/consumo-tiquetes.component';
 import { TiquetesQrComponent } from './components/tiquetes-qr/tiquetes-qr.component';
 import { NotfoundComponent } from './components/notfound/notfound.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { EstadisticaComponent } from './components/estadistica/estadistica.component';
 import { VentaComponent } from './components/reportes/venta/venta.component';
 import { ConsumoComponent } from './components/reportes/consumo/consumo.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
+
+registerLocaleData(localeEsCO, 'es-CO');
 
 const initializer =
   (promptNotificationService: PromptNotificationService) => () =>
@@ -87,32 +69,10 @@ const initializer =
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatListModule,
-    MatButtonModule,
-    MatInputModule,
-    MatIconModule,
-    MatTabsModule,
-    MatSelectModule,
-    MatPaginatorModule,
-    MatDatepickerModule,
-    MatExpansionModule,
-    MatTreeModule,
-    MatCheckboxModule,
-    MatBottomSheetModule,
-    MatSlideToggleModule,
-    MatAutocompleteModule,
-    MatCardModule,
     AppRoutingModule,
     QRCodeModule,
-    MatSliderModule,
-    MatTableModule,
-    MatSortModule,
-    MatRadioModule,
-    MatTooltipModule,
-    MatNativeDateModule,
     ZXingScannerModule,
+    MaterialModules,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
@@ -122,6 +82,7 @@ const initializer =
     BrowserAnimationsModule,
   ],
   providers: [
+    DatePipe,
     CheckForUpdateService,
     LogUpdateService,
     PromptUpdateService,
@@ -131,6 +92,8 @@ const initializer =
       deps: [PromptNotificationService],
       multi: true,
     },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    { provide: LOCALE_ID, useValue: 'es-CO' },
   ],
   bootstrap: [AppComponent],
 })
