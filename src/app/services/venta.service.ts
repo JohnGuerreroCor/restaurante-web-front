@@ -89,6 +89,8 @@ export class VentaService {
   }
 
   registrarVentas(ventas: Venta[]): Observable<number> {
+    console.log(ventas);
+    
     return this.http.post<number>(
       `${this.url}/venta/crear-ventas/${this.userLogeado}`,
       ventas,

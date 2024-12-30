@@ -226,7 +226,7 @@ export class VentaTiquetesComponent {
           venta.dependencia = this.sede;
           venta.estado = 1;
           venta.fecha = new Date().toISOString().slice(0, 10);
-          venta.hora = new Date().toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19);
+          venta.hora = new Date().toLocaleDateString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).slice(11, 19).trim();
           venta.eliminado = 1
 
 
